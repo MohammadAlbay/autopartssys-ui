@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المخازن</title>
+    <link rel="stylesheet" href="/www/css/childui.css">
+    <script>
+        if (typeof container === 'undefined') {
+            let user = sessionStorage.getItem("user");
+            if (user == null)
+                location.href = "/www/html/login.html"
+            else {
+                userData = JSON.parse(user);
+                location.href = "/www/html/" + userData.Page + "?purchases";
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="host">
+        <h1 class="main_head">المشتريات</h1>
+        <img class="floating_icon_near_to_head" src="/www/res/images/icons/icons8_create_document_48px.png"
+            style="right: 10em;" alt="اضافة فاتورة مشتريات" clickable
+            onclick="document.pressEscape();AddNormalPurchasesDialogFunction.Show();">
+
+        <div class="floating_icon_near_to_head" style="right: 24em; width: auto; margin-top: 0.2em;"
+            onclick="SupplierPurchasesWindow.Show();">
+            <button image-button>
+                <img src="/www/res/images/icons/icons8_create_document_48px.png">
+                اضافة فاتورة مشتريات من مورد
+            </button>
+        </div>
+
+        <div class="searchbar">
+            <button id="sbar_search_button" type="button" image-button autofocus="true" title="البحث عن اصناف متطابقة"
+                onclick="TopbarFormElements.Search();">
+                <img src="/www/res/images/icons/icons8_search_48px.png" focuse>
+                البحث
+            </button>
+            <input type="text" id="sbar_inputfield" placeholder=" رقم الفاتورة">
+            <input type="date" id="sbar_datefield" title=" تاريخ البداية " onfocus="this.showPicker()">
+            <input type="date" id="sbar_datefield2" title=" تاريخ النهاية" onfocus="this.showPicker()">
+            <select id="sbar_supplierselect" title="تحديد المورد"></select>
+            <select id="sbar_userselect" title="تحديد المستخدم"></select>
+            <select id="sbar_type" title="تحديد نوع الفاتورة">
+                <option value="" style="display: none;" selected>الفاتورة مدفوع قيمتها بالكامل</option>
+                <option value="0">مشتريات من مورد</option>
+                <option value="1">مصاريف يومية </option>
+            </select>
+            <select id="sbar_fullpayedselect" title="تحديد هل تم دفع كامل قيمة الفاتورة">
+                <option value="all">غير محدد</option>
+                <option value="" style="display: none;" selected>الفاتورة مدفوع قيمتها بالكامل</option>
+                <option value="1">نعم</option>
+                <option value="0">لا </option>
+            </select>
+        </div>
+        <table id="table_store" dir="rtl">
+            <tr>
+                <td>المخزن</td>
+                <td>العنوان </td>
+                <td>النوع</td>
+                <td>الحالة مفعل</td>
+                <td>بواسطة</td>
+                <td>بتاريخ</td>
+            </tr>
+        </table>
+
+        <div id="purchasebill_from_supplier_window" user-screen style="display: none;">
+
+            <div class="ux-fragment" right smaller2 style="background-color: lightgray;">
+                <h1 style="float: right;margin-right: 1em;">اضافة فاتورة مورد</h1>
+                <img id="img_ignition_startbill" src="/www/res/images/icons/icons8_create_document_48px.png"
+                    style="position: absolute;top:1em; right: 15em;" alt="اضافة صنف جديد" title="اضافة صنف جديد"
+                    clickable onclick="SupplierPurchasesWindow.New()">
+
+                <div style="margin: 5em 0px 0px 0px; width: 100%; height: 100%; text-align: center;">
+                    <div class="ux-input-with-label2" dir="rtl" fill style="margin-top: 1em;">
+                        <label for="purchasebill_bill_input">رقم الفاتورة</label>
+                        <input name="purchasebill_bill_input" style="width: 20em" id="purchasebill_bill_input">
+                    </div>
+                    <div class="ux-input-with-label2" dir="rtl" fill style="margin-top: 1em;">
+                        <label for="purchasebill_supplier_select">المورد</label>
+                        <select name="purchasebill_supplier_select" id="purchasebill_supplier_select"
+                            style="width: 20em"></select>
+                    </div>
+                    <div class="ux-input-with-label2" dir="rtl" fill style="margin-top: 1em;">
+                        <label for="purchasebill_total_input">الاجمالي</label>
+                        <input name="purchasebill_total_input" style="width: 20em" id="purchasebill_total_input">
+                    </div>
+                    <div class="ux-input-with-label2" dir="rtl" fill style="margin-top: 1em;">
+                        <label for="purchasebill_payed_input">المدفوع</label>
+                        <input name="purchasebill_payed_input" style="width: 20em" id="purchasebill_payed_input">
+                    </div>
+                    <div class="ux-input-with-label2" dir="rtl" fill style="margin-top: 1em;">
+                        <label for="purchasebill_payed_input">المتبقي</label>
+                        <input name="purchasebill_payed_input" style="width: 20em" id="purchasebill_remain_input">
+                    </div>
+                    <br>
+                    <hr>
+                    <div class="ux-input-with-label2" dir="rtl" fill style="margin-top: 1em;">
+                        <label for="purchasebill_store_select">المخزن</label>
+                        <select name="purchasebill_store_select" id="purchasebill_store_select" style="width: 20em">
+                            <option value="as">المخزن</option>
+                        </select>
+                    </div>
+
+                    <div class="ux-input-with-label2" dir="rtl" fill style="margin-top: 1em;">
+                        <label for="purchasebill_searchitem_input">البحث</label>
+                        <input name="purchasebill_searchitem_input" style="width: 20em"
+                            id="purchasebill_searchitem_input">
+                    </div>
+                    <button accept-button style="margin-top: 1em;" onclick="SearchFunction.Search();">البحث عن صنف</button>
+                </div>
+            </div>
+            <div class="ux-fragment" left bigger2>
+                <img src="/www/res/images/icons/icons8_close_90px.png" class="main_head_closeicon" title="اغلاق"
+                    onclick="window.dispatchEvent(new KeyboardEvent('keydown', {keyCode:27, key: 27}));">
+                <img id="img_save_bill" class="main_head_closeicon" noclose src="/www/res/images/icons/icons8_done_96px.png"
+                    style="left: 4em;background-color: lightgray!important;" alt="" title="حفظ الفاتورة "
+                    clickable onclick="SupplierPurchasesWindow.Save()">
+                <h1 style="float: right;margin-right: 1em;">الاصناف المحددة</h1>
+                <table dir="rtl"></table>
+            </div>
+        </div>
+        <div id="unrecognized_dialog" user-dialog style="display: none;z-index:14;">
+
+        </div>
+
+        <form action="" method="post" id="form_product" enctype='multipart/form-data'></form>
+        <div user-dialog nice-shadow='1' id="purchasing_product_userdialog" style="display: none;z-index:14;">
+            <div full-content-container>
+                <h4 id="product_useridalog_title">اضافة صنف</h4>
+                <div input-banner>
+                    <font ellipse-words>اسم الصنف</font>
+                    <input type="text" input name="name_product_dialog" 
+                        maxlength="60" minlength="2" required  form="form_product">
+                </div>
+                <div input-banner error-for="name_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>الشركة المصنعه</font>
+                    <input type="text" input name="company_product_dialog" 
+                        maxlength="45" required  form="form_product">
+                </div>
+                <div input-banner error-for="company_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>الكود</font>
+                    <input type="text" input name="code_product_dailog" 
+                        maxlength="80" minlength="2" required  form="form_product">
+                </div>
+                <div input-banner error-for="code_product_dailog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>الباركود</font>
+                    <input type="text" input name="barcode_product_dialog" 
+                        maxlength="45" minlength="8" required  form="form_product">
+                </div>
+                <div input-banner error-for="barcode_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>سعر البيع</font>
+                    <input type="number" min="0" input name="sprice_product_dialog" 
+                        minlength="1" min="0" required  form="form_product">
+                </div>
+                <div input-banner error-for="sprice_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>سعر الشراء</font>
+                    <input type="number" min="0" input name="bprice_product_dialog" 
+                        minlength="1" min="0" required  form="form_product">
+                </div>
+                <div input-banner error-for="bprice_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>سعر بيع الجملة</font>
+                    <input type="number" min="0" input name="wprice_product_dialog" 
+                        minlength="1" min="0" required  form="form_product">
+                </div>
+                <div input-banner error-for="wprice_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>يدعم البيع بالجملة</font>
+                    <select input name="wholesale_support_product_dialog" required  form="form_product">
+                        <option value="1" selected>يدعم</option>
+                        <option value="0">لا يدعم</option>
+                    </select>
+                </div>
+                <div input-banner error-for="wholesale_support_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>الفئة</font>
+                    <select input name="category_product_dialog" required  form="form_product"
+                        title="الفئة تميز المنتج داخل سجلات النظام"></select>
+                </div>
+                <div input-banner error-for="category_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>وحدة القياس</font>
+                    <select input name="measuringunit_product_dialog"  required  form="form_product"
+                        title="تحديد وحدة القياس المستخدمه مع هذا الصنف">
+                    </select>
+                </div>
+                <div input-banner error-for="measuringunit_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>الحالة</font>
+                    <select input name="active_state_product_dialog" required  form="form_product"
+                        title="المنتجات الغير مفعله لا يمكن بيعها في النظام ولكنها تظهر في السجلات">
+                        <option value="1">فعال</option>
+                        <option value="0">غير فعال</option>
+                    </select>
+                </div>
+                <div input-banner error-for="active_state_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+            </div>
+            <div control-area>
+                <button control-cancel onclick="document.pressEscape();">الغاء</button>
+                <button id="submitButton" accept-button control-ok  onclick="AddNewProductDialogFunction.Save()">حفظ التغييرات</button>
+            </div>
+        </div>
+
+        <form action="" id="normal_purchases_form"></form>
+        <div user-dialog id="normalpurchasing_product_userdialog" style="display: none;">
+            <div full-content-container style="position: relative;">
+                <div id="normal_billitems_container" style="margin-right:3%; max-height: 60%;;overflow-y: auto!important;">
+
+                </div>
+                <div style="position: absolute; width: 100%; bottom: 0px; padding: 2em 0em 2em 0em">
+                    <div input-banner>
+                        <font>الصنف</font>
+                        <input type="text" name="n_item" form="normal_purchases_form" required minlength="1" maxlength="50">
+                    </div>
+                    <div input-banner error-for="n_item"  style="display: none;">
+                        <font></font>
+                    </div>
+                    <div input-banner>
+                        <font>الكمية</font>
+                        <input type="text" name="n_quantity" form="normal_purchases_form" required min="1">
+                    </div>
+                    <div input-banner error-for="n_quantity"  style="display: none;">
+                        <font></font>
+                    </div>
+                    <div input-banner>
+                        <font>السعر</font>
+                        <input type="number" name="n_price" form="normal_purchases_form" required min="1">
+                    </div>
+                    <div input-banner error-for="n_price"  style="display: none;">
+                        <font></font>
+                    </div><br>
+                    <button onclick="AddNormalPurchasesDialogFunction.AddToCart();" 
+                    id="nSubmitButton" 
+                    style="margin: 0 auto; width: 90%; height: 2em; background-color: green; border-radius: 0.4em;">اضافه</button>
+                </div>
+            </div>
+            <div control-area>
+                <button control-cancel onclick="AddNormalPurchasesDialogFunction.Hide();">الغاء</button>
+                <button id="submitButton" control-ok onclick="AddNormalPurchasesDialogFunction.Save()">حفظ </button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accountant System</title>
+    <link rel="stylesheet" href="/www/css/normalize.css">
+    <link rel="stylesheet" href="/www/css/ui.css">
+    <link rel="stylesheet" href="/www/css/colors.css">
+    <script src="/www/js/ui.js"></script>
+    <script  src="/www/js/index.js"></script>
+    <script type="module" src="/www/js/app.accountant.js"></script>
+    
+    <script>
+        if (location.search != "?bk") {
+            document.addEventListener("DOMContentLoaded", () => {
+                try {
+                    let btn = document.getElementById("topbar_search_button_moveback");
+                    btn.remove();
+                }
+                catch {}
+            });
+        }
+        
+        var container;
+        function onload() {
+            container  = document.getElementById('app');
+        }
+    </script>
+    <style>
+
+    </style>
+</head>
+<body onload="onload();" oncontextmenu="return false;">
+    <div class="appbar">
+        <img left src="/www/res/images/icons/OIG2.hy8fcL.W0mXTKv.jpg" />
+        <font author>Autoparts System</font>
+        <img left src="/www/res/images/icons/icons8_Circled_User_Male_Skin_Type_4_96px.png"
+        onclick="UserDataEditor.Toggle();">
+        <button right image-button id="deexpand_button" onclick="document.toggleContainerArea();">
+            <img style="top: 0.5em;" right src="/www/res/images/icons/icons8_circled_menu_50px.png">
+            تدبيل
+        </button>
+        <!-- <button right>البحث</button>
+        <input type="text" product-code-field autocomplete="off" value="" placeholder="البحث في النظام"/> -->
+    </div>
+
+    <div toolbox>
+        <div container>
+            <div hidden tool onclick="showChangePriceDialog()" style="background-color: #512da8;">
+                <img src="/www/res/images/icons/icons8_low_price_127px.png" />
+                <font style="font-size: 10pt;">تغيير الاسعار</font>
+            </div>
+            <div tool data-link href="/www/html/notes.html" style="background-color: #64b5f6;">
+                <img src="/www/res/images/icons/icons8_moleskine_127px.png" />
+                <font>الملاحظات</font>
+            </div>
+            <div tool data-link href="/www/html/sales.html"  style="background-color: #66bb6a;">
+                <img src="/www/res/images/icons/icons8_copybook_127px.png" />
+                <font>المبيعات</font>
+            </div>
+            <div tool data-link href="/www/html/clients.html" style="background-color: #1565c0;">
+                <img src="/www/res/images/icons/icons8_users_127px.png" />
+                <font>العملاء</font>
+            </div>
+            <div tool data-link href="/www/html/suppliers.html" style="background-color: #607d8b;">
+                <img src="/www/res/images/icons/icons8_businessman_127px.png" />
+                <font>الموردين</font>
+            </div>
+            <div tool data-link href="/www/html/purchases.html" style="background-color:#388e3c;">
+                <img src="/www/res/images/icons/icons8_general_ledger_127px.png" />
+                <font>المشتريات</font>
+            </div>
+            <div tool style="background-color: #ffa726;" onclick="alert('قيد التطوير');">
+                <img src="/www/res/images/icons/icons8_gear_127px.png" />
+                <font>الاعدادات</font>
+            </div>
+            <div tool data-link href="/www/html/stores.html" style="background-color: #78909c;">
+                <img src="/www/res/images/icons/icons8_online_store_127px.png" />
+                <font>المخازن</font>
+            </div>
+            <div tool data-link href="/www/html/products.html" style="background-color: #ffc107;">
+                <img src="/www/res/images/icons/icons8_automotive_127px.png" />
+                <font>المنتجات</font>
+            </div>
+            <div tool data-link href="/www/html/winventory.html" style="background-color: #f9d361;" >
+                <img src="/www/res/images/icons/icons8_products_pile_127px.png" />
+                <font style="font-size: 10pt;">اعداد الجرد</font>
+            </div>
+            <!--<div hidden tool data-link href="/www/html/paymentmethods.html" style="background-color: #39bc57;">
+                <img src="/www/res/images/icons/icons8_split_transaction_127px.png">
+                <font>طرق الدفع</font>
+            </div> -->
+            <div tool style="background-color: #ef5350;" onclick="window.open('Calculator:///');">
+                <img src="/www/res/images/icons/icons8_calculator_127px.png" />
+                <font>الالة الحاسبة</font>
+            </div>
+            <div tool id="tool_logout" style="background-color: rgb(36, 36, 36);">
+                <img src="/www/res/images/icons/icons8_logout_127px.png" />
+                <font style="font-size: 10pt;">تسجيل الخروج</font>
+            </div>
+        </div>
+    </div>
+
+    <div middle-area id="app"> 
+        
+    </div>
+    
+    <div full-view hidden>
+        <div toppar>
+            <h2>الصلاحيات</h2>
+            <div tools-area>
+                <button>ملف</button>
+                <button>خيارات</button>
+                <button>حول</button>
+                <button>اغلاق</button>
+            </div>
+            <img close-icon />
+        </div>
+        <div full-content-container>
+            asa
+        </div>
+    </div>
+    <div user-profile id="accouunt_profile" style="display:none;left: 9.5%; top: 3em;">
+        <div class="userID">محمد</div>
+        <br>
+        <div class="settingsOpt" onclick="UserDataEditor.ShowEditor()">
+            <img img src="/www/res/images/icons/icons8_edit_property_48px.png">
+            <font>تعديل</font>
+        </div>
+        <div class="settingsOpt" onclick="document.logout();">
+            <img img src="/www/res/images/icons/icons8_logout_127px.png">
+            <font>تسجيل الخروج</font>
+        </div>
+    </div>
+    <div user-dialog nice-shadow='1' id="edit_account_userdialog" style="display: none;">
+        <div full-content-container>
+            <h4>تعديل حساب مستخدم</h4>
+            <div input-banner>
+                <font ellipse-words>اسم المستخدم</font>
+                <input type="text" input name="username" readonly>
+            </div>
+            <div input-banner>
+                <font ellipse-words>اسم الحساب</font>
+                <input type="text" input name="fullname">
+            </div>
+            <div input-banner>
+                <font ellipse-words>كلمة المرور</font>
+                <input type="password" input name="passcode">
+            </div>
+        </div>
+        <div control-area>
+            <button control-cancel onclick="EditorDialog.Hide();">الغاء</button>
+            <button control-ok onclick="EditorDialog.Save()">تعديل بيانات</button>
+        </div>
+    </div>
+
+    <form action="" id="form_updateprices" autocomplete="new-password"></form>
+    <div user-dialog nice-shadow='1' id="change_prices_dialog" style="display: none;">
+        <div full-content-container>
+            <h4>تحديث اسعار البيع</h4>
+            <div input-banner>
+                <font ellipse-words>سعر الدولار السابق</font>
+                <input type="number" min="0" input name="prev_price" required form="form_updateprices">
+            </div>
+            <div input-banner error-for="prev_price"  style="display: none;">
+                <font></font>
+            </div>
+            <div input-banner>
+                <font ellipse-words>سعر الدولار الحالي </font>
+                <input type="number" min="0" input name="current_price" required form="form_updateprices">
+            </div>
+            <div input-banner error-for="current_price"  style="display: none;">
+                <font></font>
+            </div>
+            <h4>النتيجة</h4>
+            <div input-banner error-for="store_type"  style="display: none;">
+                <font></font>
+            </div>
+            <div input-banner>
+                <font ellipse-words>نسبة التغيير </font>
+                <input type="number" input name="change_percentage" dir="ltr" readonly form="form_updateprices">
+            </div>
+            <div input-banner error-for="change_percentage"  style="display: none;">
+                <font></font>
+            </div>
+            <div input-banner>
+                <font ellipse-words>تصحيح الخطأ</font>
+                <select input name="fix_method" required form="form_updateprices">
+                    <option value="up">تقريب لأكبر قيمة</option>
+                    <option value="down">تقريب لأصغر قيمة</option>
+                </select>
+            </div>
+            <div input-banner error-for="fix_method"  style="display: none;">
+                <font></font>
+            </div>
+        </div>
+        <div control-area>
+            <button control-cancel onclick="document.pressEscape()">الغاء</button>
+            <button control-ok accept-button id="submitButton" onclick="changePrices()">تعديل الاسعار</button>
+        </div>
+    </div>
+    <script src="/www/js/accountant.js"></script>
+</body>
+</html>

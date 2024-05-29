@@ -1,0 +1,103 @@
+:root {
+    --card-width: 250px;
+    --card-border-radius: 16px;
+    --row-increament: 10px;
+    --card-small: 26;
+    --card-medium: 33;
+    --card-large: 45;
+    --card-margin: 15px 10px;
+    --color: rgb(225, 225, 225);
+    --card-border: solid 1px rgb(210, 210, 210);
+}
+
+@media screen and (max-width:700px) {
+    :root {
+        --card-width: 350px;
+    }
+}
+
+@media screen and (max-width:500px) {
+    :root {
+        --card-width: 400px;
+    }
+}
+@media screen and (max-width:427px) {
+    :root {
+
+        --card-width: 42vw;
+        --card-margin: 5px 5px;
+
+        --card-small: 20;
+        --card-medium: 27;
+        --card-large: 35;
+        --color: yellow;
+    }
+}
+
+/* body {
+    margin: 0px;
+    padding: 0px;
+    background-color: gray;
+} */
+
+.pin_container {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: center;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, var(--card-width));
+    grid-auto-rows: var(--row-increament);
+}
+
+.card {
+    position: relative;
+    padding: 0px;
+    margin: var(--card-margin);
+    background-color: var(--color);
+    border-radius: var(--card-border-radius);
+    border: var(--card-border);
+    overflow: hidden;
+    transition: box-shadow 0.2s ease-out, transform 0.4s ease-out;
+}
+.card:hover {
+    box-shadow:rgb(190, 190, 190) 0px 0px 15px 0.5px;
+    transform: scale(1.05);
+}
+.card:active {
+    transform: scale(1);
+}
+
+.card_small {
+    grid-row-end: span var(--card-small);
+}
+
+.card_medium {
+    grid-row-end: span var(--card-medium);
+}
+
+.card_large {
+    grid-row-end: span var(--card-large);
+}
+
+.card > main[note-content] {
+    -webkit-user-select: none;
+    user-select: none;
+    margin-top: 2%; margin-left: 3%;
+    width: 94%;
+    height: 89%!important; text-align: justify;
+    direction: rtl; overflow: hidden;
+    text-overflow: ellipsis;white-space: prewrap;
+}
+.card > b[note-publish-date] {
+    position: absolute; bottom: 0px;
+    width: 100%; text-indent: 4%;
+    -webkit-user-select: none;
+    user-select: none; 
+}
+.card_medium > main[note-content] {height: 92%!important;}
+.card_large > main[note-content] {height: 94%!important;}

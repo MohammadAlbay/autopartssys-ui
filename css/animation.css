@@ -1,0 +1,219 @@
+@keyframes hide-with-scale-anime {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    99% {
+        transform: scale(0.4);
+        opacity: 0;
+        display: none;
+    }
+    100% {
+        display: none;
+    }
+}
+@keyframes show-with-scale-anime {
+    0% {
+        transform: scale(0.4);
+        opacity: 0; 
+    }
+    70% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+    99% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        display: block;
+    }
+}
+
+.hide-scale {
+    animation-name: hide-with-scale-anime;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+.show-scale {
+    animation-name: show-with-scale-anime;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+    animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+    
+}
+
+@keyframes fullview_start {
+    0% {/*transform: translateY(40%);*/
+        transform: rotate(-20deg);
+        transform-origin: 100% 0%; opacity: 0.3;
+    }
+    90% {/*transform: translateY(0%); */
+        transform: rotateY(0deg);opacity: 1;
+        }
+    100% {display: block;}
+}
+@keyframes fullview_end {
+    0% {transform: translateY(0%); opacity: 1;}
+    95% {transform: translateY(100%); }
+    96% {opacity: 0;}
+    99% {display: none; opacity: 0;}
+    100% {display: none; opacity: 0;}
+}
+
+.hide-fullview {
+    animation-fill-mode: forwards;
+    animation-duration: 0.5s;
+    animation-name: fullview_end; 
+    animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.show-fullview {
+    animation-name: fullview_start;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+    animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+    
+}
+
+
+@keyframes hide-with-slide-right {
+    0% {
+        transform: translateX(0%);
+        opacity: 1;
+    }
+    99% {
+        transform: translateX(100%);
+        opacity: 0;
+        display: none;
+    }
+    100% {
+        display: none;
+    }
+}
+@keyframes show-with-slide-left {
+    0% {
+        transform: translateX(100%);
+        opacity: 0; 
+    }
+    /* 70% {
+        transform: translateX(-10%);
+        opacity: 1;
+    } */
+    99% {
+        transform: translateX(0%);
+        opacity: 1;
+    }
+    100% {
+        display: block;
+    }
+}
+
+
+
+.hide-toolbox {
+    animation-name: hide-with-slide-right;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+.show-toolbox {
+    animation-name: show-with-slide-left;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+    animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+@keyframes expand-right {
+    0% {
+        left: 0.2em;
+    }
+    100% {
+        left: 0.2em;
+        width: calc(100% - 0.4em);
+    }
+}
+@keyframes deexpand-left {
+    0% {
+        left: 0.2em;
+        width: calc(100% - 0.4em);
+    }
+    99% {
+        left: 0.2em;
+        width: calc(100% - 15.5em - 0.6em);
+    }
+    100% {
+        display: block;
+    }
+}
+
+
+
+.expand-middle-area {
+    animation-name: expand-right;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+.deexpand-middle-area {
+    animation-name: deexpand-left;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+/*
+0% {
+        transform: translateX(100%);
+        opacity: 0; 
+    }
+     70% {
+        transform: translateX(-20%);
+        opacity: 1;
+    } 
+    99% {
+        transform: translateX(0%);
+        opacity: 1;
+    }
+    100% {
+        display: block;
+    }
+*/
+
+@keyframes hide-with-opacity-anime {
+    0% {
+        opacity: 1;
+    }
+    99% {
+        opacity: 0;
+        display: none;
+    }
+    100% {
+        display: none;
+    }
+}
+@keyframes show-with-opacity-anime {
+    0% {
+        opacity: 0; 
+    }
+    70%, 99% {
+        opacity: 1;
+    }
+    100% {
+        display: block;
+    }
+}
+
+.hide-opacity {
+    animation-name: hide-with-opacity-anime;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+.show-opacity {
+    animation-name: show-with-opacity-anime;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+    animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+    
+}

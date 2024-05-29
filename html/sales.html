@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>العملاء</title>
+    <link rel="stylesheet" href="/www/css/childui.css">
+    <link rel="stylesheet" href="/www/css/gridlayout.css">
+    <script>
+        if (typeof container === 'undefined') {
+            let user = sessionStorage.getItem("user");
+            if (user == null)
+                location.href = "/www/html/login.html"
+            else {
+                userData = JSON.parse(user);
+                location.href = "/www/html/" + userData.Page + "?sales";
+            }
+        }
+    </script>
+
+    <style>
+        .searchbar>* {
+            width: 11%;
+        }
+
+        .searchbar>*:first-child {
+            width: 6%;
+        }
+
+        .searchbar>input {
+            width: 15%;
+        }
+
+        .product_link {
+            cursor: pointer;
+            color: #01579b;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="host">
+        <h1 class="main_head">المبيعات</h1>
+        <img class="floating_icon_near_to_head" src="/www/res/images/icons/icons8_today_48px.png" alt="فواتير اليوم"
+            title="فواتير اليوم" clickable onclick="fetchTodayBills();" style="right: 10em;">
+
+        <div class="floating_icon_near_to_head" style="right: 14em; width: auto; margin-top: 0.2em;"
+            onclick="exportToCSV()">
+            <button image-button>
+                <img src="/www/res/images/icons/icons8_export_csv_48px.png">
+                تصدير لملف CSV
+            </button>
+        </div>
+        <div id="ibills_processing_request" class="floating_icon_near_to_head"
+            style="right: 25em; width: auto; margin-top: 0.8em;">
+
+        </div>
+
+        <div class="searchbar">
+            <button id="sbar_search_button" type="button" image-button autofocus="true" title="البحث عن اصناف متطابقة"
+                onclick="TopbarFormElements.Search();">
+                <img src="/www/res/images/icons/icons8_search_48px.png" focuse>
+                البحث
+            </button>
+            <input type="text" id="sbar_inputfield" placeholder=" رقم الفاتورة">
+            <input type="date" id="sbar_datefield" title=" تاريخ البداية " onfocus="this.showPicker()">
+            <input type="date" id="sbar_datefield2" title=" تاريخ النهاية" onfocus="this.showPicker()">
+            <select id="sbar_clientselect" title="تحديد العميل"></select>
+            <select id="sbar_userselect" title="تحديد المستخدم"></select>
+            <select id="sbar_paymentselect" title="تحديد نوع طريقة الدفع"></select>
+
+            <select id="sbar_fullpayedselect" title="تحديد هل تم دفع كامل قيمة الفاتورة">
+                <option value="all">غير محدد</option>
+                <option value="" style="display: none;" selected>الفاتورة مدفوع قيمتها بالكامل</option>
+                <option value="1">نعم</option>
+                <option value="0">لا </option>
+            </select>
+        </div>
+        <table id="table_bills" dir="rtl">
+            <tr>
+                <td>#</td>
+                <td>العميل</td>
+                <td>المدفوع</td>
+                <td>المتبقي</td>
+                <td>الاجمالي</td>
+                <td>طريقة الدفع</td>
+                <td>تاريخ التسجيل</td>
+                <td>بواسطة</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+    </div>
+
+
+    <div user-screen name="bill_detials" style="display: none;">
+        <h1 id="bill_details_title" class="main_head">تفاصيل الفاتورة</h1>
+        <img class="main_head_closeicon" src="/www/res/images/icons/icons8_close_90px.png" title="اغلاق"
+            onclick="BillDetailsScreen.Hide();">
+        <img class="main_head_closeicon" style="left: 5em;" noclose src="/www/res/images/icons/icons8_print_96px.png"
+            title="طباعة الفاتورة" onclick="printBill()" onclick="BillDetailsScreen.Hide();">
+        <img class="main_head_closeicon" style="left: 8em;" id="bill_details_viewbill" noclose
+            src="/www/res/images/icons/icons8_view_details_127px.png" title="فتح الفاتورة في واجهة البيع"
+            onclick="open()" onclick="BillDetailsScreen.Hide();">
+        <table id="bill_details_table" dir="rtl">
+            <tr>
+                <td>#</td>
+                <td>الاسم</td>
+                <td>الباركود</td>
+                <td>الشركة</td>
+                <td>الكود</td>
+                <td>الكمية</td>
+                <td>بسعر الجملة</td>
+                <td>القيمة</td>
+                <td>التخفيض</td>
+                <td>الاجمالي</td>
+                <td>تعديل بواسطة</td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/www/css/normalize.css">
+    <link rel="stylesheet" href="../css/colors.css">
+    <link rel="stylesheet" href="../css/ui.css">
+    <script src="/www/js/index.js"></script>
+    <style>
+        body {
+            height: 100%;
+            overflow: none;
+            background-image: linear-gradient(45deg, #9cc5e9, #133d74d3);
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-attachment: fixed;
+        }
+
+        .box {
+            position: relative;
+            margin: 0 auto;
+            background-color: whitesmoke;
+            border-radius: 2em;
+            border: 2px rgb(98, 98, 98) solid;
+            width: 25em;
+            height: 22em;
+            overflow: hidden;
+            box-shadow: #afafaf 1px 0px 5px 2px;
+            margin-top: 10%;
+        }
+
+        .box img {
+            position: absolute;
+            z-index: 1;
+        }
+
+        .box img:nth-child(1) {
+            top: 10px;
+            left: -2.8em;
+        }
+
+        .box img:nth-child(2) {
+            bottom: 10px;
+            right: -1.5em;
+        }
+
+        .box h1 {
+            margin-top: 1.5em;
+            text-align: center;
+            font-family: Calibri;
+
+        }
+
+        .box h1,
+        .box input,
+        .box button {
+            position: relative;
+            z-index: 2;
+        }
+
+        .box input {
+            width: 90%;
+            height: 3em;
+            border-radius: 0.5em;
+            margin-top: 0.7em;
+            margin-left: 4%;
+        }
+
+        .box button {
+            width: 90%;
+            margin-top: 2em;
+            margin-left: 5%;
+            height: 2.5em;
+            color: white;
+            background-color: #43a047;
+            border: 0px;
+            border-radius: 0.5em;
+        }
+
+        .caption {
+            font-size: 30pt;
+            color: white;
+            text-align: center;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        input {
+            text-align: center;
+        }
+
+        input::placeholder {
+            text-align: center;
+        }
+
+        .err {
+            display: block;
+            margin-top: 0.4em;
+            width: 100%;
+            height: 1em;
+            font-size: 11pt;
+            color: rgb(160, 55, 55);
+            text-align: center;
+            display: none;
+        }
+    </style>
+    <script>
+        (async () => {
+            let userData = sessionStorage.getItem("user");
+            if (userData != null) {
+                userData = JSON.parse(userData);
+                let result = await document.checkServerLoginState();
+                if (result.State == 0) {
+                    location.href = "/www/html/" + userData.Page;
+                }
+            }
+
+        })();
+
+
+    </script>
+</head>
+
+<body>
+    <h1 class="caption">
+        نظام ادارة مبيعات قطع غيار السيارات والزيوت
+    </h1>
+    <form action="javascript:void(0)" id="form1" method="POST" autocomplete="off" enctype="application/x-www-form-urlencoded"></form>
+
+    <div user-dialog style="margin-top: 5%; height: 25em;">
+        <div full-content-container>
+            <h1>تسجيل الدخول </h1>
+            <div input-banner>
+                <font ellipse-words> اسم المستخدم</font>
+                <input type="text" input name="username" 
+                    minlength="4" 
+                    maxlength="30"
+                    form="form1">
+            </div>
+            <div input-banner error-for="username" style="display: none;">
+                <font></font>
+            </div>
+            <div input-banner>
+                <font ellipse-words>كلمة المرور</font>
+                <input type="text" input name="passcode" 
+                    minlength="3" 
+                    maxlength="45"
+                    form="form1">
+            </div>
+            <div input-banner error-for="passcode"  style="display: none;">
+                <font></font>
+            </div>
+        </div>
+        <div control-area>
+            <button id="submitButton" control-ok accept-button onclick="login()"> تسجيل الدخول</button>
+        </div>
+    </div>
+    <script>
+        
+
+
+        const validationMap = [
+            {
+                Input: "username",
+                ValidateWhen: "input",
+                async Validator(v) {
+                    if (!document.validateUsername(v))
+                        return [false, "اسم المستخدم يجب ان يتكون من 4 الى 30 حرف"];
+                    return [true, v];
+                }
+            },
+            {
+                Input: "passcode",
+                ValidateWhen: "input",
+                async Validator(v) {
+                    if (v.length < 3 || v.length > 45)
+                        return [false, "كلمة المرور يجب ان تتكون من 3 الى 45 حرف ورقم"];
+                    return [true, v];
+                }
+            }
+        ];
+
+
+        let results = document.validateInput(validationMap, document.querySelector("#submitButton"));
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        async function login() {
+            let promise = await results;
+            let r = promise.Result;
+            if(r.filter(row => row.State == false).length > 0) {
+            } else 
+                await sendData(r[0].Value, r[1].Value);
+        }
+
+        async function sendData(username, password) {
+            try {
+                const form = document.querySelector("#form1");
+                const formData = new FormData(form);
+                formData.set("username", username);
+                formData.set("passcode", password);
+                const response = await fetch('/service?Task=login', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                    },
+                    body: formData
+                });
+                const data = await response.json();
+                if (data == null) return;
+
+                if (data.State != 0)
+                    alert(data.Message);
+                else {
+                    let userData = data.Message;
+                    sessionStorage.removeItem("user");
+                    sessionStorage.setItem("user", JSON.stringify(userData));
+                    location.href = "/www/html/" + userData.Page;
+                }
+            } catch (error) {
+                console.log('Error:', error);
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/white-blue.css">
+    <link rel="stylesheet" href="../css/white-blue-mediaquery.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="nofollow" crossorigin="anonymous">
+    <script>
+        var container;
+        function onload() {
+            container  = document.getElementById('app');
+            document.container = container;
+        }
+
+    </script>
+</head>
+<body onload="onload();">
+    
+    <div class="top">
+        <a href="/www/html/main.html" data-link>Main</a>
+        <a href="/www/html/info.html" data-link>Info</a>
+        <a href="/account" data-link>Account</a>
+        
+        <div class="logo-section">
+            <b>Luxury Design</b>
+        </div>
+    </div>
+    <div class="middle">
+        <!-- navigation menu -->
+        <nav class="navigation-menu">
+            <div class="item" style="width: 16vw;" onclick="location.href='/info'">
+                <b>حول</b>
+                <img src="../res/images/icons/about_48px.png" alt="">
+            </div>
+            
+            <div class="item"  style="width: 22vw;">
+                <b>أعجبني</b>
+                <img src="../res/images/icons/bookmark_48px.png" alt="">
+            </div>
+            <div class="item" style="width: 29vw;">
+                <b>الأكتر طلبا</b>
+                <img src="../res/images/icons/star_48px.png" alt="">
+            </div>
+            <div class="item"  style="width: 25vw;" onclick="location.href='/'">
+                <b>الرئيسية</b>
+                <img src="../res/images/icons/home_page_48px.png" alt="">
+            </div>
+        </nav>
+        <!-- The fragment container -->
+        <div id="app"></div>
+        
+    </div>
+    
+    <script type="module" src="../js/index.js"></script>
+</body>
+</html>

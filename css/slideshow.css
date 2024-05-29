@@ -1,0 +1,43 @@
+
+@keyframes slide-right {
+    from {transform: translateX(0px);}
+    to {transform: translateX(calc(100% + 500px));}
+}
+.slidshow {
+    width: 500px!important; height: 500px!important;
+    max-width: 600px;
+    max-height: 500px;
+    margin: 0 auto;
+    border: solid 2px red;
+    overflow: none;
+    word-wrap: break-word;
+
+    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.slidshow > div {
+    position: relative;
+    width: auto;
+    height: 500px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    word-wrap: break-word;
+}
+
+.slidshow > div > img {
+    
+    width: 500px;
+    height: 500px; 
+    
+    scroll-behavior: smooth;
+    scroll-margin: 200px;
+}
+
+/*
+top: 0px; 
+position: absolute;
+*/
+

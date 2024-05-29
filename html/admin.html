@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="/www/css/normalize.css">
+    <link rel="stylesheet" href="/www/css/ui.css">
+    <link rel="stylesheet" href="/www/css/colors.css">
+    
+    <script src="/www/js/ui.js"></script>
+    <script type="module" src="/www/js/index.js"></script>
+    <script>
+        
+        
+        var container;
+        function onload() {
+            container  = document.getElementById('app');
+        }
+    </script>
+    <style>
+
+    </style>
+    
+</head>
+<body onload="onload();" oncontextmenu="return false;" style="user-select: none;">
+    <div class="appbar">
+        <img left src="/www/res/images/icons/OIG2.hy8fcL.W0mXTKv.jpg" />
+        <font author>Autoparts System</font>
+        <img left src="/www/res/images/icons/icons8_Circled_User_Male_Skin_Type_4_96px.png"
+        onclick="UserDataEditor.Toggle();">
+        <button right image-button id="deexpand_button" onclick="document.toggleContainerArea();">
+            <img style="top: 0.5em;" right src="/www/res/images/icons/icons8_circled_menu_50px.png">
+            تدبيل
+        </button>
+        <!-- <button right id="topbar_search_button">البحث</button>
+        <input type="text" id="topbar_inputfield" product-code-field autocomplete="off" value="" placeholder="البحث في النظام"/> -->
+    </div>
+
+    <div toolbox>
+        <div container>
+            <div tool data-link href="/www/html/accounts.html" style="background-color: #1976d2;">
+                <img src="/www/res/images/icons/icons8_user_account_127px.png" />
+                <font>المستخدمين</font>
+            </div>
+            <div tool data-link href="/www/html/notes.html" style="background-color: #64b5f6;">
+                <img src="/www/res/images/icons/icons8_moleskine_127px.png" />
+                <font>الملاحظات</font>
+            </div>
+            <div tool data-link href="/www/html/sales.html" style="background-color: #66bb6a;">
+                <img src="/www/res/images/icons/icons8_copybook_127px.png" />
+                <font>المبيعات</font>
+            </div>
+            <div tool data-link href="/www/html/clients.html" style="background-color: #1565c0;">
+                <img src="/www/res/images/icons/icons8_users_127px.png" />
+                <font>العملاء</font>
+            </div>
+            <div tool data-link href="/www/html/suppliers.html" style="background-color: #607d8b;">
+                <img src="/www/res/images/icons/icons8_businessman_127px.png" />
+                <font>الموردين</font>
+            </div>
+            <div tool data-link href="/www/html/purchases.html" style="background-color:#388e3c;">
+                <img src="/www/res/images/icons/icons8_general_ledger_127px.png" />
+                <font>المشتريات</font>
+            </div>
+            <div tool style="background-color: #ffa726;" onclick="alert('قيد التطوير');">
+                <img src="/www/res/images/icons/icons8_gear_127px.png" />
+                <font>الاعدادات</font>
+            </div>
+            <div tool data-link href="/www/html/stores.html" style="background-color: #78909c;">
+                <img src="/www/res/images/icons/icons8_online_store_127px.png" />
+                <font>المخازن</font>
+            </div>
+            <div tool data-link href="/www/html/products.html" style="background-color: #ffc107;">
+                <img src="/www/res/images/icons/icons8_automotive_127px.png" />
+                <font>المنتجات</font>
+            </div>
+            <div tool style="background-color: #8224e7;" onclick="document.openCashierSystem()">
+                <img src="/www/res/images/icons/icons8_cash_register_127px.png" />
+                <font style="font-size: 10pt;">نظام نقاط البيع</font>
+            </div>
+            <div tool style="background-color: #ef5350;" onclick="document.openAccountantSystem()">
+                <img src="/www/res/images/icons/icons8_accounting_127px.png" />
+                <font style="font-size: 10pt;">نظام المحاسب</font>
+            </div>
+            <div tool data-link href="/www/html/paymentmethods.html" style="background-color: #39bc57;">
+                <img src="/www/res/images/icons/icons8_split_transaction_127px.png">
+                <font>طرق الدفع</font>
+            </div>
+            <div tool style="background-color: #ef5350;" onclick="window.open('Calculator:///');">
+                <img src="/www/res/images/icons/icons8_calculator_127px.png" />
+                <font>الالة الحاسبة</font>
+            </div>
+            <div tool style="background-color: #66bb6a;" onclick="adminConfigurationUserDialog.Show();">
+                <img src="/www/res/images/icons/icons8_book_and_pencil_127px.png" />
+                <font  style="font-size: 10pt;">اعداد المؤسسة</font>
+            </div>
+            <div tool id="tool_logout" style="background-color: rgb(36, 36, 36);">
+                <img src="/www/res/images/icons/icons8_logout_127px.png" />
+                <font style="font-size: 10pt;">تسجيل الخروج</font>
+            </div>
+        </div>
+    </div>
+
+    <div middle-area id="app"> 
+        <h1>نظام ادارة مبيعات قطع غيار السيارات و الزيوت</h1>
+    </div>
+    
+    <div user-profile id="accouunt_profile" style="display:none;left: 9.5%; top: 3em;">
+        <div class="userID">محمد</div>
+        <br>
+        <div class="settingsOpt" onclick="UserDataEditor.ShowEditor()">
+            <img img src="/www/res/images/icons/icons8_edit_property_48px.png">
+            <font>تعديل</font>
+        </div>
+        <div class="settingsOpt" onclick="document.logout();">
+            <img img src="/www/res/images/icons/icons8_logout_127px.png">
+            <font>تسجيل الخروج</font>
+        </div>
+    </div>
+    <div user-dialog nice-shadow='1' id="configuration_userdialog" style="display: none;">
+        <div full-content-container>
+            <h4>بيانات المؤسسة</h4>
+            <div input-banner>
+                <font ellipse-words>اسم الشركة</font>
+                <input type="text" input name="configuration_userdialog_business" required maxlength="60">
+            </div>
+            <div input-banner title="عنوان الشركة">
+                <font ellipse-words>العنوان 1</font>
+                <input type="text" input name="configuration_userdialog_address1" required  maxlength="45">
+            </div>
+            <div input-banner title="هدا الحقل غير اجباري">
+                <font ellipse-words>العنوان 2</font>
+                <input type="text" input name="configuration_userdialog_address2"  maxlength="45">
+            </div>
+            <div input-banner title="رقم الهاتف">
+                <font ellipse-words>رقم الهاتف 1</font>
+                <input type="text" dir="ltr" oninput="document.validatePhoneNumberInput(this)" pattern="(2189[124][0-9]{7})|(09[124][0-9]{7})" input name="configuration_userdialog_phone1" required maxlength="15">
+            </div>
+            <div input-banner title="هذا الحقل غير اجباري">
+                <font ellipse-words>رقم العاتف 2</font>
+                <input type="text" dir="ltr" oninput="document.validatePhoneNumberInput(this)" input name="configuration_userdialog_phone2" maxlength="15">
+            </div>
+            <div input-banner title="تحدد الملاحظة المذكورة في الفاتورة">
+                <font ellipse-words>الملاحظة 1</font>
+                <input type="text" input name="configuration_userdialog_note1" value="لا يوجد" maxlength="50">
+            </div>
+            <div input-banner title="تحدد الملاحظة المذكورة في الفاتورة">
+                <font ellipse-words>الملاحظة 2</font>
+                <input type="text" input name="configuration_userdialog_note2"  value="لا يوجد" maxlength="50">
+            </div>
+
+        </div>
+        <div control-area>
+            <button control-cancel onclick="adminConfigurationUserDialog.Hide();">الغاء</button>
+            <button control-ok onclick="adminConfigurationUserDialog.Save()" id="client_dialog_okbutton">حفظ</button>
+        </div>
+    </div>
+    <div user-dialog nice-shadow='1' id="edit_account_userdialog" style="display: none;">
+        <div full-content-container>
+            <h4>تعديل حساب مستخدم</h4>
+            <div input-banner>
+                <font ellipse-words>اسم المستخدم</font>
+                <input type="text" input name="username" readonly>
+            </div>
+            <div input-banner>
+                <font ellipse-words>اسم الحساب</font>
+                <input type="text" input name="fullname">
+            </div>
+            <div input-banner>
+                <font ellipse-words>كلمة المرور</font>
+                <input type="password" input name="passcode">
+            </div>
+        </div>
+        <div control-area>
+            <button control-cancel onclick="EditorDialog.Hide();">الغاء</button>
+            <button control-ok onclick="EditorDialog.Save()">تعديل بيانات</button>
+        </div>
+    </div>
+    
+    <div full-view hidden>
+        <div toppar>
+            <h2>الصلاحيات</h2>
+            <div tools-area>
+                <button>ملف</button>
+                <button>خيارات</button>
+                <button>حول</button>
+                <button>اغلاق</button>
+            </div>
+            <img close-icon />
+        </div>
+        <div full-content-container>
+            asa
+        </div>
+    </div>
+    <script type="module" src="/www/js/app.admin.js"></script>
+    <script src="/www/js/admin.js"></script>
+</body>
+</html>

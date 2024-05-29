@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>العملاء</title>
+    <link rel="stylesheet" href="/www/css/childui.css">
+    <link rel="stylesheet" href="/www/css/gridlayout.css">
+    <script>
+        if (typeof container === 'undefined') {
+            let user = sessionStorage.getItem("user");
+            if (user == null)
+                location.href = "/www/html/login.html"
+            else {
+                userData = JSON.parse(user);
+                location.href = "/www/html/" + userData.Page + "?clients";
+            }
+        }
+    </script>
+
+    <style>
+        .searchbar>* {
+            width: 11%;
+        }
+
+        .searchbar>*:first-child {
+            width: 6%;
+        }
+
+        .searchbar>input {
+            width: 25%;
+        }
+
+        .product_link {
+            cursor: pointer;
+            color: #01579b;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="host">
+        <h1 class="main_head">العملاء</h1>
+        <img class="floating_icon_near_to_head" src="/www/res/images/icons/icons8_add_user_male_skin_type_7_48px.png"
+            style="right: 11em;" alt="اضافة عميل جديد" title="اضافة عميل جديد" clickable
+            onclick="prepareEditClientDialog(null);toggleShowHideOfUserDialog(addClientUserDialog, 'show')">
+        <img class="floating_icon_near_to_head" src="/www/res/images/icons/icons8_refresh_48px.png" alt="اعادة تحميل"
+            title="اعادة تحميل" clickable onclick="loadClients();" style="right: 14em;">
+
+        <table id="table_clients" dir="rtl">
+            <tr>
+                <td style="display: none">#</td>
+                <td>اسم موظف الشركة</td>
+                <td>المسمى الوظيفي</td>
+                <td>الشركة</td>
+                <td>العنوان</td>
+                <td>رقم الهاتف</td>
+                <td>البريد الالكتروني</td>
+                <td>سقف الديون</td>
+                <td>الديون</td>
+                <td>الحالة / مفعل</td>
+                <td>تاريخ التسجيل</td>
+                <td>بواسطة</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+        <form action="" method="post" id="form_client" autocomplete="off"></form>
+        <div user-dialog nice-shadow='1' id="clients_userdialog" style="display: none;">
+            <div full-content-container>
+                <h4 id="clients_userdialog_title">اضافة عميل جديد</h4>
+                <div input-banner hidden>
+                    <font ellipse-words></font>
+                    <input type="text" input name="id_add_client_dialog"  form="form_client" readonly>
+                </div>
+                <div input-banner title="اسم الموظف التابع للشركة او مندوب الشركة">
+                    <font ellipse-words>اسم العميل</font>
+                    <input type="text" input name="clientname_add_client_dialog"
+                     maxlength="60" minlength="4" required  form="form_client">
+                </div>
+                <div input-banner error-for="clientname_add_client_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>المسمى الوظيفة</font>
+                    <input type="text" input name="jobtitle_add_client_dialog"
+                      maxlength="60" minlength="4"  form="form_client" required>
+                </div>
+                <div input-banner error-for="jobtitle_add_client_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>الشركة</font>
+                    <input type="text" input name="company_add_client_dialog"
+                     maxlength="60" minlength="4"  form="form_client" required>
+                </div>
+                <div input-banner error-for="company_add_client_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner title="يمكنك اضافة اكتر من رقم عبر ترك مسافات بين الارقام">
+                    <font ellipse-words>رقم الهاتف</font>
+                    <input type="text" input name="phone_add_client_dialog" 
+                     minlength="10" required  form="form_client">
+                </div>
+                <div input-banner error-for="phone_add_client_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner title="البريد الالكرتوني التابع للشركة">
+                    <font ellipse-words>البريد الالكرتوني</font>
+                    <input  type="text" input name="email_add_client_dialog"  form="form_client"
+                            maxlength="60" value="no-mail@domain.com">
+                </div>
+                <div input-banner error-for="email_add_client_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner title="تحديد سقف الدين">
+                    <font ellipse-words>سقف الديون</font>
+                    <input type="number" input name="maxdebt_add_client_dialog"
+                     min="-1" step="0.15" required  form="form_client">
+                </div>
+                <div input-banner error-for="maxdebt_add_client_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner title="عنوان الشركة">
+                    <font ellipse-words>عنوان الشركة</font>
+                    <input type="text" input name="address_add_client_dialog"
+                      maxlength="90" minlength="4" required  form="form_client">
+                </div>
+                <div input-banner error-for="address_add_client_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner title="الحالة تحدد هل يمكن التعامل مع هذا العميل او لا">
+                    <font ellipse-words>الحالة</font>
+                    <select type="text" input name="activestate_add_client_dialog" required form="form_client">
+                        <option value="1" selected>مفعل</option>
+                        <option value="0">غير مفعل</option>
+                    </select>
+                </div>
+                <div input-banner error-for="activestate_add_client_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+            </div>
+            <div control-area>
+                <button control-cancel onclick="toggleShowHideOfUserDialog(addClientUserDialog, 'hide');">الغاء</button>
+                <button id="submitButton" control-ok onclick="addClient()" id="client_dialog_okbutton">حفظ</button>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الاصناف</title>
+    <link rel="stylesheet" href="/www/css/childui.css">
+    <link rel="stylesheet" href="/www/css/gridlayout.css">
+    <script>
+        if (typeof container === 'undefined') {
+            let user = sessionStorage.getItem("user");
+            if (user == null)
+                location.href = "/www/html/login.html"
+            else {
+                userData = JSON.parse(user);
+                location.href = "/www/html/" + userData.Page + "?suppliers";
+            }
+        }
+    </script>
+
+    <style>
+        .searchbar > * {width: 11%;}
+        .searchbar > *:first-child {width: 6%;}
+        .searchbar > input {width: 25%;}
+
+        .product_link {
+            cursor: pointer;
+            color: #01579b; text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="host">
+        <h1 class="main_head">الموردين</h1>
+        <img class="floating_icon_near_to_head" src="/www/res/images/icons/icons8_add_user_male_skin_type_7_48px.png"
+            style="right: 11em;" alt="اضافة عميل جديد" title="اضافة عميل جديد" clickable
+            onclick="prepareEditSupplierDialog(null);toggleShowHideOfUserDialog(supplierDialog, 'show')">
+        <img class="floating_icon_near_to_head" src="/www/res/images/icons/icons8_refresh_48px.png" alt="اعادة تحميل"
+            title="اعادة تحميل" clickable onclick="loadSuppliers();" style="right: 14em;">
+
+            <table id="table_clients" dir="rtl">
+                <tr>
+                    <td>#</td>
+                    <td>اسم موظف الشركة</td>
+                    <td>المسمى الوظيفي</td>
+                    <td>الشركة</td>
+                    <td>رقم الهاتف</td>
+                    <td>البريد الالكتروني</td>
+                    <td>الديون</td>
+                    <td>تاريخ التسجيل</td>
+                    <td>بواسطة</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+
+            <form action="" method="post" id="form_supplier"></form>
+            <div user-dialog nice-shadow='1' id="suppliers_userdialog" style="display: none;">
+                <div full-content-container>
+                    <h4 id="supplier_userdialog_title">اضافة مورد </h4>
+                    <div input-banner hidden>
+                        <font ellipse-words></font>
+                        <input type="text" input name="id_suppliers_userdialog"  form="form_supplier" readonly>
+                    </div>
+                    <div input-banner title="اسم الموظف التابع للشركة او مندوب الشركة">
+                        <font ellipse-words>اسم المورد</font>
+                        <input type="text" input name="suppname_suppliers_userdialog" 
+                                maxlength="60" minlength="4" required  form="form_supplier">
+                    </div>
+                    <div input-banner error-for="suppname_suppliers_userdialog"  style="display: none;">
+                        <font></font>
+                    </div>
+                    <div input-banner>
+                        <font ellipse-words>المسمى الوظيفة</font>
+                        <input type="text" input name="jobtitle_suppliers_userdialog" 
+                            maxlength="60" minlength="4" required  form="form_supplier">
+                    </div>
+                    <div input-banner error-for="jobtitle_suppliers_userdialog"  style="display: none;">
+                        <font></font>
+                    </div>
+                    <div input-banner>
+                        <font ellipse-words>الشركة</font>
+                        <input type="text" input name="company_suppliers_userdialog" 
+                            maxlength="60" minlength="4" required  form="form_supplier">
+                    </div>
+                    <div input-banner error-for="company_suppliers_userdialog"  style="display: none;">
+                        <font></font>
+                    </div>
+                    <div input-banner title="يمكنك اضافة اكتر من رقم عبر ترك مسافات بين الارقام">
+                        <font ellipse-words>رقم الهاتف</font>
+                        <input type="text" input name="phone_suppliers_userdialog" 
+                            maxlength="60" minlength="4" required  form="form_supplier">
+                    </div>
+                    <div input-banner error-for="phone_suppliers_userdialog"  style="display: none;">
+                        <font></font>
+                    </div>
+                    <div input-banner title="البريد الالكرتوني التابع للشركة">
+                        <font ellipse-words>البريد الالكرتوني</font>
+                        <input type="text" input name="email_suppliers_userdialog"
+                        maxlength="60" value="no-mail@domain.com"  form="form_supplier">
+                    </div>
+                    <div input-banner error-for="email_suppliers_userdialog"  style="display: none;">
+                        <font></font>
+                    </div>
+                    <div input-banner title="عنوان الشركة">
+                        <font ellipse-words>عنوان الشركة</font>
+                        <input type="text" input name="address_suppliers_userdialog" 
+                            maxlength="90" minlength="4" required  form="form_supplier">
+                    </div>
+                    <div input-banner error-for="address_suppliers_userdialog"  style="display: none;">
+                        <font></font>
+                    </div>
+                    <div input-banner title="الحالة تحدد هل يمكن التعامل مع هذا المورد او لا">
+                        <font ellipse-words>الحالة</font>
+                        <select type="text" input name="activestate_suppliers_userdialog"
+                            required  form="form_supplier">
+                            <option value="1" selected>مفعل</option>
+                            <option value="0">غير مفعل</option>
+                        </select>
+                    </div>
+                    <div input-banner error-for="activestate_suppliers_userdialog"  style="display: none;">
+                        <font></font>
+                    </div>
+                </div>
+                <div control-area>
+                    <button control-cancel onclick="toggleShowHideOfUserDialog(supplierDialog, 'hide');">الغاء</button>
+                    <button id="submitButton" control-ok onclick="addSupplier()" id="supplier_dialog_okbutton">حفظ</button>
+                </div>
+            </div>
+        
+    </div>
+</body>
+
+</html>

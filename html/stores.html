@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المخازن</title>
+    <link rel="stylesheet" href="/www/css/childui.css">
+    <link rel="stylesheet" href="/www/css/gridlayout.css">
+    <script>
+        if (typeof container === 'undefined') {
+            let user = sessionStorage.getItem("user");
+            if(user == null)
+                location.href = "/www/html/login.html"
+            else {
+                userData = JSON.parse(user);
+                location.href = "/www/html/"+userData.Page+"?store";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="host">
+        <h1 class="main_head">المخازن</h1>
+        <img class="floating_icon_near_to_head" src="/www/res/images/icons/icons8_create_document_48px.png"
+            style="right: 10em;"
+            alt="اضافة مخزن جديدة" 
+            clickable 
+            onclick="prepareEditUserDialog(null);">
+            <img class="floating_icon_near_to_head" src="/www/res/images/icons/icons8_refresh_48px.png"
+            alt="اعادة تحميل" clickable onclick="loadStores();" 
+            style="right: 13em;">
+            <table id="table_store" dir="rtl">
+                <tr>
+                    <td>المخزن</td>
+                    <td>العنوان </td>
+                    <td>النوع</td>
+                    <td>الحالة مفعل</td>
+                    <td>بواسطة</td>
+                    <td>بتاريخ</td>
+                </tr>
+            </table>
+
+        <form action="" method="post" id="form_store"></form>
+        <div user-dialog nice-shadow='1' id="store_userdialog" style="display: none;">
+            <div full-content-container>
+                <h4 id="store_userdialog_title">تعديل بيانات مخزن </h4>
+                <div input-banner>
+                    <font ellipse-words>اسم المخزن</font>
+                    <input type="text" input name="store_name" 
+                            maxlength="30" minlength="1" required  form="form_store">
+                </div>
+                <div input-banner error-for="store_name"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>العنوان</font>
+                    <input type="text" input name="store_address" value="الحقل فارغ"
+                            maxlength="45" minlength="4" required  form="form_store">
+                </div>
+                <div input-banner error-for="store_address"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>الحالة</font>
+                    <select input name="store_active_state" required  form="form_store">
+                        <option value="1">فعال</option>
+                        <option value="0">غير فعال</option>
+                    </select>
+                </div>
+                <div input-banner error-for="store_active_state"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>النوع</font>
+                    <select input name="store_type" required  form="form_store">
+                        <option value="main">رئيسي</option>
+                        <option value="secondary">فرعي</option>
+                    </select>
+                </div>
+                <div input-banner error-for="store_type"  style="display: none;">
+                    <font></font>
+                </div>
+            </div>
+            <div control-area>
+                <button control-cancel onclick="document.pressEscape();">الغاء</button>
+                <button id="submitButton" accept-button control-ok onclick="addStore()">حفظ </button>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

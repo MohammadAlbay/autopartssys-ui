@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/www/css/ui.css">
+    <script src="/www/js/index.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <div id="userscreen" user-screen>aa</div>
+
+    <script type="module">
+        
+        import AbstractView from "/www/js/views/AbstractView.js";
+        import Notes from "/www/js/views/Notes.js";
+        import SWP from  "/www/js/swp.js";
+
+        let configs = {
+            routes: [{ path: "/www/html/notes.html", view: Notes }],
+            previousPage: [{ search: "note", path: "/www/html/notes.html" }]
+        }
+        const app = new SWP(configs);
+        app.Container = document.getElementById("userscreen");
+        app.RouteTo("/www/html/notes.html?embed");
+    </script>
+</body>
+
+</html>

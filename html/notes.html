@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الملاحظات</title>
+    <link rel="stylesheet" href="/www/css/childui.css">
+    <link rel="stylesheet" href="/www/css/gridlayout.css">
+    <script> 
+        if (typeof container === 'undefined') {
+            let user = sessionStorage.getItem("user");
+            if(user == null)
+                location.href = "/www/html/login.html"
+            else {
+                userData = JSON.parse(user);
+                location.href = "/www/html/"+userData.Page+"?note";
+            }
+        }
+
+    </script>
+</head>
+<body>
+    <div class="host">
+        <h1 class="main_head">الملاحظات</h1>
+        <img class="floating_icon_near_to_head" src="/www/res/images/icons/icons8_create_document_48px.png"
+            style="right: 10em;"
+            alt="اضافة ملاحظة جديدة" 
+            clickable 
+            onclick="document.closeAllOpenUserDialogs();toggleShowHideOfUserDialog(addNoteUserDialog, 'show');">
+            <img class="floating_icon_near_to_head" src="/www/res/images/icons/icons8_refresh_48px.png"
+            alt="اعادة تحميل" clickable onclick="loadNotes();" 
+            style="right: 13em;">
+        <div>
+            <div id="note_host" class="pin_container" style="width: 99.5%; direction: rtl;" />
+        </div>
+
+
+        <div user-dialog nice-shadow='1' id="view_note_userdialog" style="display: none;">
+            <div full-content-container>
+                <h4>تفاصيل الملاحظة </h4>
+                <textarea name="view_note_content" readonly style="margin-top: 0em; width: 90%;resize: none;" rows="21"></textarea>
+            </div>
+            <div control-area>
+                <button control-cancel onclick="toggleShowHideOfUserDialog(viewNoteUserDialog, 'hide');">الغاء</button>
+                <button control-cancel id="remove_note_button">حذف الملاحظة</button>
+            </div>
+        </div>
+
+        <div user-dialog nice-shadow='1' id="add_note_userdialog" style="display: none;">
+            <div full-content-container>
+                <h4>إضافة ملاحظة </h4>
+                <textarea name="add_note_content" 
+                style="margin-top: 0em; width: 90%;resize: none;" 
+                rows="17" label=""
+                placeholder="محتوى الملاحظة"></textarea>
+                <div input-banner error-for="add_note_content"  style="display: none;">
+                    <font></font>
+                </div>
+            </div>
+            <div control-area>
+                <button control-cancel onclick="toggleShowHideOfUserDialog(addNoteUserDialog, 'hide');">الغاء</button>
+                <button id="submitButton" control-ok onclick="addNote()">حفظ الملاحظة</button>
+            </div>
+        </div>
+    </div>
+
+    <script embedded-script-for="notes">
+        
+    </script>
+</body>
+</html>

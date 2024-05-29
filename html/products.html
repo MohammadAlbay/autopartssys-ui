@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الاصناف</title>
+    <link rel="stylesheet" href="/www/css/childui.css">
+    <link rel="stylesheet" href="/www/css/gridlayout.css">
+    <script>
+        if (typeof container === 'undefined') {
+            let user = sessionStorage.getItem("user");
+            if (user == null)
+                location.href = "/www/html/login.html"
+            else {
+                userData = JSON.parse(user);
+                location.href = "/www/html/" + userData.Page + "?products";
+            }
+        }
+    </script>
+
+    <style>
+        .searchbar>* {
+            width: 11%;
+        }
+
+        .searchbar>*:first-child {
+            width: 6%;
+        }
+
+        .searchbar>input {
+            width: 25%;
+        }
+
+        .product_link {
+            cursor: pointer;
+            color: #01579b;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="host">
+        <h1 class="main_head">الاصناف والفئات</h1>
+        <img id="produc_add_product" class="floating_icon_near_to_head" src="/www/res/images/icons/icons8_create_document_48px.png"
+            style="right: 14em;" alt="اضافة صنف جديد" title="اضافة صنف جديد" clickable
+            onclick="prepareProductDialog(null);">
+        <img class="floating_icon_near_to_head" src="/www/res/images/icons/icons8_refresh_48px.png" alt="اعادة تحميل"
+            title="اعادة تحميل" clickable onclick="loadProduct(true);">
+        <img class="floating_icon_near_to_head" src="/www/res/images/icons/icons8_folders_48px.png" style="right: 20em;"
+            alt="ادارة الفئات" title="ادارة الفئات" clickable
+            onclick="document.closeAllOpenPopups();toggleShowHideOfFullView(categoryFullView, 'show');loadCategories();">
+
+        <div class="floating_icon_near_to_head" style="right: 24em; width: auto; margin-top: 0.2em;"
+            onclick="document.closeAllOpenPopups();toggleShowHideOfFullView(measuringUnitUserDialog, 'show');loadMeasuringUnits();">
+            <button image-button>
+                <img src="/www/res/images/icons/icons8_drawing_compass_48px.png">
+                ادارة وحدات القياس
+            </button>
+        </div>
+        <div class="searchbar">
+            <button type="button" image-button autofocus="true" title="البحث عن اصناف متطابقة" onclick="loadProduct();">
+                <img src="/www/res/images/icons/icons8_search_48px.png" focuse>
+                البحث
+            </button>
+            <select name="product_searchbar_searchfield_type_select" title="تحديد نوع عبارة البحث">
+                <option value="" style="display: none;" selected>تحديد نوع عبارة البحث</option>
+                <option value="all">غير محدد</option>
+                <option value="Fullname">بحث بالاسم</option>
+                <option value="Company">بحث بالشركة المصنعة</option>
+                <option value="Code">بحث بالكود </option>
+                <option value="Barcode">بحث بالباركود </option>
+                <option value="Id">بحث برقم الصنف </option>
+            </select>
+            <input type="text" name="product_searchbar_fieldvalue" placeholder="عبارة البحث">
+            <select id="product_searchbar_store_select" title="تحديد المخزن"></select>
+            <select id="product_searchbar_category_select" title="نحديد الفئة"></select>
+            <select id="product_searchbar_support_ws_select" title="تحديد نوع البيع">
+                <option value="all">غير محدد</option>
+                <option value="" style="display: none;" selected>تحديد نوع البيع</option>
+                <option value="1">يدعم البيع بالجملة</option>
+                <option value="0">لا يدعم البيع بالجملة</option>
+            </select>
+            <select id="product_searchbar_active_select" title="تحديد الحالة">
+                <option value="" style="display: none;" selected>تحديد الحالة</option>
+                <option value="all">غير محدد</option>
+                <option value="1">فعال</option>
+                <option value="0">غير فعال</option>
+            </select>
+
+            <select id="product_searchbar_visible_select" title="تحديد هل المنتج يظهر او لا">
+                <option value="all">غير محدد</option>
+                <option value="" style="display: none;" selected>تحديد هل المنتج يظهر او لا</option>
+                <option value="1">يظهر</option>
+                <option value="0">لا يظهر</option>
+            </select>
+        </div>
+        <table id="table_items" dir="rtl" style="width: 100%;">
+            <tr>
+                <td style="display:none">#</td>
+                <td>الاسم</td>
+                <td>المصنع</td>
+                <td>الكود</td>
+                <td>الباركود</td>
+                <td>س. بيع</td>
+                <td>س. شراء</td>
+                <td>س.ب. الجملة</td>
+                <td>المخزن</td>
+                <td>الفئة</td>
+                <td>الكمية</td>
+                <td>الحالة مفعل</td>
+                <td style="display:none">بواسطة</td>
+                <td>بتاريخ</td>
+            </tr>
+        </table>
+        <div user-dialog nice-shadow='1' id="productimage_userdialog" style="display: none; height: 30em;">
+            <div full-content-container>
+                <h4 id="userdialog_category_title">صورة الصنف</h4> 
+                <img id="image_productimage_userdialog" style="max-width: 100%; max-height: 100%;"
+                    src="/www/uploads/items-pics/638486518918324142.jpg">
+            </div>
+            <div control-area>
+                <button control-cancel onclick="document.pressEscape();">اغلاق</button>
+            </div>
+        </div>
+        <form action="" method="post" id="form_product" enctype='multipart/form-data'></form>
+        <div user-dialog nice-shadow='1' id="product_userdialog" style="display: none;">
+            <div full-content-container>
+                <h4 id="product_useridalog_title">تعديل بيانات صنف</h4>
+                <div input-banner>
+                    <font ellipse-words>رقم الصنف</font>
+                    <input type="text" input name="id_product_dialog" readonly  form="form_product">
+                </div>
+                <div input-banner>
+                    <font ellipse-words>المستخدم</font>
+                    <input type="text" input name="addedby_product_dialog" readonly form="form_product">
+                </div>
+                <div input-banner>
+                    <font ellipse-words>اسم الصنف</font>
+                    <input type="text" input name="name_product_dialog" 
+                        maxlength="60" minlength="2" required  form="form_product">
+                </div>
+                <div input-banner error-for="name_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>الشركة المصنعه</font>
+                    <input type="text" input name="company_product_dialog" 
+                        maxlength="45" required  form="form_product">
+                </div>
+                <div input-banner error-for="company_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>الكود</font>
+                    <input type="text" input name="code_product_dailog" 
+                        maxlength="80" minlength="2" required  form="form_product">
+                </div>
+                <div input-banner error-for="code_product_dailog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>الباركود</font>
+                    <input type="text" input name="barcode_product_dialog" 
+                        maxlength="45" minlength="8" required  form="form_product">
+                </div>
+                <div input-banner error-for="barcode_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>الكمية</font>
+                    <input type="text" input name="quantity_product_dialog" 
+                        maxlength="5" minlength="1" max="99999" min="0" required  form="form_product">
+                </div>
+                <div input-banner error-for="quantity_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>الكمية الاساسية</font>
+                    <input type="text" input name="basequantity_product_dialog" 
+                        minlength="1" min="0" required  form="form_product">
+                </div>
+                <div input-banner error-for="basequantity_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>سعر البيع</font>
+                    <input type="number" min="0" input name="sprice_product_dialog" 
+                        minlength="1" min="0" required  form="form_product">
+                </div>
+                <div input-banner error-for="sprice_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>سعر الشراء</font>
+                    <input type="number" min="0" input name="bprice_product_dialog" 
+                        minlength="1" min="0" required  form="form_product">
+                </div>
+                <div input-banner error-for="bprice_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>سعر بيع الجملة</font>
+                    <input type="number" min="0" input name="wprice_product_dialog" 
+                        minlength="1" min="0" required  form="form_product">
+                </div>
+                <div input-banner error-for="wprice_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>يدعم البيع بالجملة</font>
+                    <select input name="wholesale_support_product_dialog" required  form="form_product">
+                        <option value="1" selected>يدعم</option>
+                        <option value="0">لا يدعم</option>
+                    </select>
+                </div>
+                <div input-banner error-for="wholesale_support_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>المخزن</font>
+                    <select input name="store_product_dialog" readonly form="form_product" title="المخزن هو مكان تواجد الصنف"></select>
+                </div>
+                <div input-banner error-for="store_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>الفئة</font>
+                    <select input name="category_product_dialog" required  form="form_product"
+                        title="الفئة تميز المنتج داخل سجلات النظام"></select>
+                </div>
+                <div input-banner error-for="category_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>وحدة القياس</font>
+                    <select input name="measuringunit_product_dialog"  required  form="form_product"
+                        title="تحديد وحدة القياس المستخدمه مع هذا الصنف">
+                    </select>
+                </div>
+                <div input-banner error-for="measuringunit_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>الحالة</font>
+                    <select input name="active_state_product_dialog" required  form="form_product"
+                        title="المنتجات الغير مفعله لا يمكن بيعها في النظام ولكنها تظهر في السجلات">
+                        <option value="1">فعال</option>
+                        <option value="0">غير فعال</option>
+                    </select>
+                </div>
+                <div input-banner error-for="active_state_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>يظهر في القائمة</font>
+                    <select input name="visible_state_product_dialog" required  form="form_product"
+                        title="تحدد هذه القيمة ظهور المنتج في باقي الواجهات عند البحث عنه">
+                        <option value="1">نعم</option>
+                        <option value="0">لا</option>
+                    </select>
+                </div>
+                <div input-banner error-for="visible_state_product_dialog"  style="display: none;">
+                    <font></font>
+                </div>
+            </div>
+            <div control-area>
+                <button control-cancel onclick="document.pressEscape();">الغاء</button>
+                <button id="submitButton" accept-button control-ok id="userdialog_product_submit_button" onclick="editProduct()">حفظ التغييرات</button>
+            </div>
+        </div>
+
+        <div user-dialog nice-shadow='1' id="category_userdialog" style="display: none; z-index: 51;">
+            <div full-content-container>
+                <h4 id="userdialog_category_title">إضافة فئة </h4>
+                <div input-banner>
+                    <font ellipse-words>اسم الفئة</font>
+                    <input type="text" input name="category_name">
+                </div>
+                <div input-banner>
+                    <font ellipse-words>الحالة</font>
+                    <select input name="userdialogcategory_activestate_select">
+                        <option value="1">فعال</option>
+                        <option value="0">غير فعال</option>
+                    </select>
+                </div>
+            </div>
+            <div control-area>
+                <button control-cancel onclick="toggleShowHideOfUserDialog(categoryUserDialog, 'hide');">الغاء</button>
+                <button control-ok id="userdialog_category_submit_button" onclick="addStore()">حفظ</button>
+            </div>
+        </div>
+
+        <!-- MENU -->
+        <div class="ux-menu-overlay-cover" style="display: none;">
+            <div name="Item-Menu" class="ux-menu" dir="rtl" style="display: display;">
+                <ul>
+                    <li onclick="MenuManager.HideMenu('SearchedItems-Menu')">
+                        <img src="/www/res/images/icons/icons8_cancel_48px.png">
+                        <font>رجوع</font>
+                    </li>
+                    <li></li>
+                    <li name="items_show_profile" onclick="itemsMenuItemSelected(this)">
+                        <img src="/www/res/images/icons/icons8_web_design_48px.png">
+                        <font>ملف الصنف</font>
+                    </li>
+                    <li name="items_matched_cars" onclick="itemsMenuItemSelected(this)">
+                        <img src="/www/res/images/icons/icons8_bullet_list_48px_1.png">
+                        <font>قائمة المركبات المتوافقة</font>
+                    </li>
+                    <li></li>
+                    <li name="items_movdequantity" onclick="itemsMenuItemSelected(this)">
+                        <img src="/www/res/images/icons/icons8_bullet_list_48px_1.png">
+                        <font>نقلل كمية صنف للمخزن اخر</font>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="matchedcars_dialog" user-dialog style="display: none;z-index:14;">
+            <div full-content-container>
+                <h4 id="userdialog_category_title">المركبات المتوافقة </h4>
+                <!-- <div class="riched-content-card">
+                    <font>محمحمدمحمدمحمدمحمدمدمحمحمدمحمدمحمدمحمدمد</font>
+                    <font>9458309458304349</font>
+                    <font>250 LYD</font>
+                    <font>زيزيوتزيوتزيوتوت</font>
+                    <img src="/www/res/images/icons/icons8_Car_96px.png">
+                </div> -->
+            </div>
+            <div control-area>
+                <button control-cancel onclick="toggleShowHideOfUserDialog(categoryUserDialog, 'hide');">اغلاق</button>
+                <button control-ok id="matchedcars_add_button">اضافة مركبة جديدة</button>
+            </div>
+        </div>
+        <!--الفئات-->
+        <div full-view id="fullview_category" style="display: none;">
+            <div toppar>
+                <h2>الفئات</h2>
+                <div tools-area>
+                    <button image-button title="انشاء فئة جديدة في النظام"
+                        onclick="prepareCategoryDialog();document.toggleShowHideOfUserDialog(categoryUserDialog, 'show')">
+                        <img src="/www/res/images/icons/icons8_add_folder_90px.png">
+                        فئة جديدة
+                    </button>
+                    <button image-button title="تحميل بيانات الفئات المفعلة فقط" onclick="loadCategories();">
+                        <img src="/www/res/images/icons/icons8_sync_90px.png">
+                        الفئات المفعلة
+                    </button>
+                    <button image-button title="تحميل كافة الفئات ويشتمل على الفئات الغير مفعلة"
+                        onclick="loadCategories(true);">
+                        <img src="/www/res/images/icons/icons8_sync_90px.png">
+                        كل الفئات
+                    </button>
+                    <button image-button title="اغلاق واجهة الفئات" onclick="document.closeAllOpenPopups();">
+                        <img src="/www/res/images/icons/icons8_close_90px.png">
+                        الخروج
+                    </button>
+                </div>
+                <img close-icon onclick="document.closeAllOpenPopups();" />
+            </div>
+            <div full-content-container>
+                <table id="table_category" dir="rtl">
+                    <tr>
+                        <td>الفئة</td>
+                        <td>عدد الاصناف المسجلة </td>
+                        <td>الحالة مفعل</td>
+                        <td>بواسطة</td>
+                        <td>بتاريخ</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!--وحدات القياس-->
+        <div user-screen id="measuringunit_view" style="display: none;">
+            <div class="ux-fragment" right smaller3 style="background-color: #0277bd;">
+                <img style="position: absolute; right: 1em; top: 0.7em; width: 32px; height: 32px; cursor: pointer;" 
+                    src="/www/res/images/icons/icons8_close_90px.png"
+                    onclick="window.dispatchEvent(new KeyboardEvent('keydown', {keyCode:27, key: 27}));">
+                <h2 style="text-align: center; color: white;">اضافة وحده قياس جديدة</h2>
+
+                <p
+                    style="color:white;text-align: center;justify-self: start; font-size: 14pt;margin: 0 auto; width: 90%;">
+                    وحدات القياس المضافة لا يمكن حذفها وانما يتم تعديل خواصها لتكون فعاله او غير فعالة
+                </p>
+
+                <div
+                    style="margin: 0 auto; padding:1em; margin-top: 5em; width: 80%; text-align: center; border: 1px solid lightgray; border-radius: 0.6em;">
+                    <input type="text" name="mu-add-new-name" style="height: 2em;" required>
+                    <button style="height: 2.3em;" onclick="addMeasuringUnits();">اضافة</button>
+                </div>
+                <hr><br>
+                <h2 style="text-align: center; color: white;">تعديل وحدت القايس المحددة</h2>
+                <p
+                    style="color:white;text-align: center;justify-self: start; font-size: 14pt;margin: 0 auto; width: 90%;">
+                    بالامكان تعديل بيانات وحدات القياس عبر تحديد الايقونه  المجاورة لبيانات وحدة القياس المراد تعديل بياناتها
+                </p>
+                <div
+                    style="margin: 0 auto; padding:1em; margin-top: 5em; width: 80%; text-align: center; border: 1px solid lightgray; border-radius: 0.6em;">
+                    <input type="text" name="mu-edit-name" style="height: 2em;">
+                    <input type="hidden" name="mu-edit-id" style="height: 2em;">
+                    <select name="mu-edit-activestate" style="height: 2.3em;">
+                        <option value="1">مفعل</option>
+                        <option value="0">غير مفعل</option>
+                    </select><br><br>
+                    <button onclick="editMeasuringUnits()">تعديل</button>
+                </div>
+
+            </div>
+            <div class="ux-fragment" left bigger3 style="background-color: whitesmoke;">
+                <div class="ux-fragment-header" style="text-align: center;">
+                    وحدات القياس في النظام
+                </div>
+                <div class="ux-fragment-content">
+                    <table id="measuringunits_table" dir="rtl">
+                        <tr>
+                            <td>#</td>
+                            <td>اسم وحده القياس</td>
+                            <td>الحالة مفعل</td>
+                            <td>بواسطة</td>
+                            <td>بتاريخ</td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+<!--
+
+
+            <div user-dialog nice-shadow='1' id="product_userdialog" style="display: none;">
+            <div full-content-container>
+                <h4 id="product_useridalog_title">تسجيل صنف جديد</h4>
+                <div input-banner hidden>
+                    <font ellipse-words>رقم الصنف</font>
+                    <input type="text" input name="full_edit_product_id" readonly>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>اسم الصنف</font>
+                    <input type="text" input name="userdialog_product_fullname" required>
+                </div>
+                <div input-banner error-for="store_name"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>الشركة المصنعه</font>
+                    <input type="text" input name="userdialog_product_company" required>
+                </div>
+                <div input-banner error-for="store_name"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>الكود</font>
+                    <input type="text" input name="userdialog_product_code" required>
+                </div>
+                <div input-banner error-for="store_name"  style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>الباركود</font>
+                    <input type="text" input name="userdialog_product_barcode" required>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>سعر البيع</font>
+                    <input type="number" min="0" input name="userdialog_product_sprice" required>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>سعر الشراء</font>
+                    <input type="number" min="0" input name="userdialog_product_bprice" required>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>سعر بيع الجملة</font>
+                    <input type="number" min="0" input name="userdialog_product_wprice" required>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>يدعم البيع بالجملة</font>
+                    <select input name="userdialog_product_wholesale_support">
+                        <option value="1">يدعم</option>
+                        <option value="0">لا يدعم</option>
+                    </select>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>الفئة</font>
+                    <select input name="userdialog_product_available_dialogs" required
+                        title="الفئة تميز المنتج داخل سجلات النظام"></select>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>وحدة القياس</font>
+                    <select input name="userdialog_product_measuringunit" required
+                        title="تحديد وحدة القياس المستخدمه مع هذا الصنف">
+                    </select>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>الحالة</font>
+                    <select input name="userdialog_product_active_state" required
+                        title="المنتجات الغير مفعله لا يمكن بيعها في النظام ولكنها تظهر في السجلات">
+                        <option value="1">فعال</option>
+                        <option value="0">غير فعال</option>
+                    </select>
+                </div>
+            </div>
+            <div control-area>
+                <button control-cancel
+                    onclick="document.toggleShowHideOfUserDialog(productUserDialog, 'hide');">الغاء</button>
+                <button control-ok id="userdialog_product_submit_button">حفظ التغييرات</button>
+            </div>
+        </div>
+
+-->

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>العملاء</title>
+    <link rel="stylesheet" href="/www/css/childui.css">
+    <link rel="stylesheet" href="/www/css/gridlayout.css">
+    <script>
+        if (typeof container === 'undefined') {
+            let user = sessionStorage.getItem("user");
+            if (user == null)
+                location.href = "/www/html/login.html"
+            else {
+                userData = JSON.parse(user);
+                location.href = "/www/html/" + userData.Page + "?winventory";
+            }
+        }
+    </script>
+
+    <style>
+        .searchbar>* {
+            width: 11%;
+        }
+
+        .searchbar>*:first-child {
+            width: 6%;
+        }
+
+        .searchbar>input {
+            width: 25%;
+        }
+
+        .product_link {
+            cursor: pointer;
+            color: #01579b;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="host">
+        <h1 class="main_head">الجرد (تسوية الكميات)</h1>
+        <img class="floating_icon_near_to_head" src="/www/res/images/icons/icons8_create_document_48px.png"
+            style="right: 19em;" alt="اضافة ملف جرد جديد" title="اضف ملف جرد جديد" clickable onclick="manualAddWI()">
+        <img class="floating_icon_near_to_head" src="/www/res/images/icons/icons8_refresh_48px.png" alt="اعادة تحميل"
+            title="اعادة تحميل" clickable onclick="loadWI();" style="right: 22em;">
+
+        <table id="table_winventory" dir="rtl">
+            <tr>
+                <td>#</td>
+                <td>عام الجرد</td>
+                <td>المخازن الغير مجرودة</td>
+                <td>تاريخ التسجيل</td>
+                <td></td>
+            </tr>
+        </table>
+
+        <form action="" id="wi_form"></form>
+        <div user-screen>
+            <div class="ux-fragment" right smaller3>
+                <div>
+                    <input type="text" name="searchvalue" form="wi_form">
+                    <select form="wi_form" name="store"></select>
+                    <button onclick="searchItem();">send</button>
+                </div>
+
+                <table id="searched_item_table" dir="rtl">
+                    <tr>
+                        <td>#</td>
+                        <td>الاسم</td>
+                        <td>الكود</td>
+                        <td>الباركود </td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="ux-fragment" left bigger3>
+                <div class="ux-fragment-header">
+                    <b style="color:Red;margin-left: 1em; float: left;cursor: pointer"
+                        onclick="BillRepository.Hide();">اغلاق</b>
+                </div>
+                <table dir="rtl">
+                    <tr>
+                        <td>#</td>
+                        <td>الصنف</td>
+                        <td>المخزن</td>
+                        <td>الكمية المتوقعه</td>
+                        <td>الكمية الفعلية</td>
+                        <td>الفرق</td>
+                        <td>سعر الشراء</td>
+                        <td>القيمة</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <form action="" method="post" id="form_paymentoptions" enctype='multipart/form-data'></form>
+        <div user-dialog nice-shadow='1' id="paymentoptions_userdialog" style="display: none;">
+            <div full-content-container>
+                <h4 id="paymentmethods_title">اضافة طريقة دفع</h4>
+                <div style="display: none;" input-banner title="اسم الموظف التابع للشركة او مندوب الشركة">
+                    <font ellipse-words></font>
+                    <input type="hidden" input name="oldname_paymentmethod_dialog" form="form_paymentoptions">
+                </div>
+                <div input-banner title="اسم الموظف التابع للشركة او مندوب الشركة">
+                    <font ellipse-words>اسم طريقة الدفع</font>
+                    <input type="text" input name="name_paymentmethod_dialog" maxlength="30" minlength="1" required
+                        form="form_paymentoptions">
+                </div>
+                <div input-banner error-for="name_paymentmethod_dialog" style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>مزود الخدمة</font>
+                    <input type="text" input name="provider_paymentmethod_dialog" maxlength="45" minlength="1" required
+                        form="form_paymentoptions">
+                </div>
+                <div input-banner error-for="provider_paymentmethod_dialog" style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner>
+                    <font ellipse-words>القيمة المضافة</font>
+                    <input type="number" step="0.25" min="0" input name="addedvalue_paymentmethod_dialog" required
+                        form="form_paymentoptions">
+                </div>
+                <div input-banner error-for="addedvalue_paymentmethod_dialog" style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner title="تحدد ما اذا كانت القيمة المضافة تمثل نسبة او قيمة نقدية بالدينار">
+                    <font ellipse-words>القيمة المضافة كـنسبة مئوية</font>
+                    <select type="text" input name="ispercentage_paymentmethod_dialog" required
+                        form="form_paymentoptions">
+                        <option value="1" selected>نعم</option>
+                        <option value="0">لا</option>
+                    </select>
+                </div>
+                <div input-banner error-for="ispercentage_paymentmethod_dialog" style="display: none;">
+                    <font></font>
+                </div>
+                <div input-banner title="الحالة تحدد هل يمكن التعامل بطريقة الدفع هذه او لا">
+                    <font ellipse-words>الحالة</font>
+                    <select type="text" input name="active_paymentmethod_dialog" required form="form_paymentoptions">
+                        <option value="1" selected>مفعل</option>
+                        <option value="0">غير مفعل</option>
+                    </select>
+                </div>
+                <div input-banner error-for="active_paymentmethod_dialog" style="display: none;">
+                    <font></font>
+                </div>
+            </div>
+            <div control-area>
+                <button control-cancel
+                    onclick="document.toggleShowHideOfUserDialog(paymentDialog, 'hide');">الغاء</button>
+                <button control-ok id="okbutton_paymentmethod_dialog">حفظ</button>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

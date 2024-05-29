@@ -1,0 +1,1159 @@
+@charset "utf-8";
+@import "animation.css";
+
+.none {display: none;}
+.noscroll {overflow:hidden}
+.scroll-x {overflow-x:scroll}
+.scroll-y {overflow-y:scroll}
+*[right]{float: right;}
+*[left]{float: left;}
+
+*[hidden] {display: none;}
+*[clickable] {cursor: pointer;}
+*[notallowed] {cursor: not-allowed;}
+*[align-center] {display: block; text-align: -webkit-center;}
+*[ellipse-words] {text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}
+.grayon {filter: grayscale(100%);}
+.grayoff {filter: grayscale(0%);}
+.clickable {cursor: pointer;}
+.clickable {cursor: not-allowed;}
+.selected {outline: 2px solid black;}
+:root {
+    --appbar-height: 2.5em;
+    --toolbox-width: 15.5em;
+    --toolbox-top: calc(var(--appbar-height) + 0.4em);
+}
+
+
+
+body {overflow: hidden;}
+
+div.appbar {user-select: none;
+    position: absolute; top: 0.2em; left: 0.2em; width: calc(100% - 0.4em); height: var(--appbar-height);
+    background-color:rgb(240,240,240); box-shadow: 0px 0px 3px 2px  rgb(200,200,200); border-radius: 0.3em;
+}
+
+div.appbar > font[author] {
+    float: left; color:  #2962FF; margin-left: 0.6em;
+    margin-top: 0.77em; font-family: SFDB, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+div.appbar > input[product-code-field],
+div.appbar > input[input], 
+div.appbar > select[input] {
+    float: right;
+    width: 20em;
+    height: 1.8em;
+    background-color: rgb(240,240,240);
+    margin-right: 0.22em;
+    margin-top: 0.22em;
+    border: 1.5px solid rgb(100,100,100);
+    border-radius: 0.3em;
+    outline: none;
+    position: static!important;
+}
+div.appbar > select[input] {height: 2.06em;}
+div.appbar > img {border-radius: 50%; padding:0.1em;  margin-top: 0.3em; cursor: pointer;}
+div.appbar > img:hover {box-shadow: 0px 0px 2px 1px rgb(190,190,190);}
+div.appbar > img[right] { 
+    float: right; width: 25px; height: 25px; margin-right: 0.8em;
+}
+div.appbar > img[right]:first-of-type {
+    float: right; width: 25px; height: 25px; margin-right: 1em;
+}
+div.appbar > img[left]  { 
+    float: left; width: 27px; height: 27px; margin-left: 0.8em;
+}
+div.appbar > img[left]:first-of-type {margin-left: 1em;}
+div.appbar > button {
+    margin-top: 0.22em; height: 2em;
+    border-radius: 0.3em; border: solid darkgray 1px; 
+    overflow: hidden;
+}
+div.appbar > button[right] {float: right; margin-right: 1em;}
+div.appbar > button[left] {float: left; margin-left: 1em;}
+div.appbar > button[right]:first-of-type {margin-right: 0.2em;}
+
+
+
+
+div[toolbox] {
+    user-select: none;
+    position: absolute;
+    top: var(--toolbox-top);
+    right: 0.2em;
+    border-radius: 0.4em;
+    box-shadow: 0px 1px 2px 1px rgb(150,150,150);
+    width: var(--toolbox-width);
+    height: calc(100% - var(--appbar-height) - 0.6em);
+    background-color: rgb(240,240,240);
+}
+div[toolbox][left] {
+    left: 0.2em;width:14em;
+}
+div[toolbox] > div[container] {
+    border-radius: inherit;
+    position: relative;
+    text-align: center;
+    /* align-content: center; */
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+div[toolbox] > div[container] > div[tool] {
+    margin: 1em 0.1em 0em;
+    position: relative;
+    cursor: pointer;
+    width: 4.65em;
+    height: 6em;
+    background-color: rgb(215, 215, 215);
+    border-radius: 0.4em;
+    display: inline-block;
+    box-shadow: rgb(200,200,200) 0px 0px 8px 2px;
+    transition: box-shadow, 0.3s;
+}
+div[toolbox] > div[container] > div[tool]:hover {
+    box-shadow:none;
+    transition: box-shadow, 0.3s;
+    /*rgb(197, 197, 197) 0px 0px 1px 3px;*/
+}
+div[toolbox] > div[container] > div[tool]:active {
+    box-shadow: none;
+}
+div[toolbox] > div[container] > div[tool] > img {
+    margin-top: 0.2em; width: 3.6em; height: 3.4em;
+    padding: 0.4em; padding-bottom: 0.5em; border:solid 1px white;
+    border-radius: 2em; box-sizing: border-box;
+}
+
+div[toolbox] > div[container] > div[tool] > font {
+    width: 100%; max-height: calc(100% - 0.5em - 3.5em); 
+    max-width: 100%; padding: 0.2em; font-size: 12pt;
+    font-family: 'Times New Roman', Times, serif;
+    color: white;
+}
+
+
+
+
+
+
+div[middle-area] {
+    position: absolute; top: var(--toolbox-top); right: calc(var(--toolbox-width) + 0.4em); border-radius: 0.4em; 
+    box-shadow: 0px 1px 2px 1px rgb(150,150,150);
+    width: calc(100% - var(--toolbox-width) - 0.6em); height: calc(100% - var(--appbar-height) - 0.6em);; 
+    background-color: rgb(240,240,240);
+    overflow-y: auto; 
+    overflow-x: hidden; scroll-behavior: smooth;
+}
+/* 
+@media screen and (max-width: 1180px) {
+    div[toolbox][left] {
+        box-shadow: 0px 1px 2px 1px rgb(190,190,190);
+        width: calc(100% - 16.7em); height: calc(100% / 2 - 3em );
+    }
+    div[middle-area] {
+        top:calc(100% / 2 - 0.4em);
+        left: 0.2em;  width: calc(100% - 16.7em);
+        height: calc(100% / 2 + 0em);
+    }
+}  */
+
+
+
+*[nice-scrollbar] {
+    overflow-y: auto; scroll-behavior: smooth;
+}
+*[nice-scrollbar-on]{
+    overflow-y: visible; scroll-behavior: smooth;
+}
+*[nice-scrollbar]::-webkit-scrollbar, *[nice-scrollbar-on]::-webkit-scrollbar {
+	width: 10px; 
+}
+*[nice-scrollbar]::-webkit-scrollbar-track,
+*[nice-scrollbar-on]::-webkit-scrollbar-track {
+	border-radius: 0.5em;
+	background-color: rgb(220,220,220);
+}
+*[nice-scrollbar]::-webkit-scrollbar-thumb,
+*[nice-scrollbar-on]::-webkit-scrollbar-thumb {
+	background-color: rgb(190,190,190);
+	border-radius: 0.2em;
+}
+*[nice-scrollbar]::-webkit-scrollbar-thumb:hover,
+*[nice-scrollbar-on]::-webkit-scrollbar-thumb:hover {
+	background-color: rgb(160,160,160);
+}
+
+*[hidden-scroll] {
+    overflow-x: auto; scroll-behavior: smooth;
+}
+*[hidden-scroll]::-webkit-scrollbar {
+    width: 0px;height: 0px;
+}
+*[hidden-scroll]::-webkit-scrollbar-track {
+    background: green;
+    height: 0px;
+}
+
+div[middle-area] > div[topbar] {
+    width: 95%; height: 2em!important; max-height: 2em;
+    margin: 0 auto; margin-top: 0.3em;
+    border-collapse: collapse;
+}
+
+
+
+
+div[middle-area] > div[topbar] > button {
+    height:100%; padding-right: 1em; padding-left: 1em;
+}
+
+
+div[user-toolbox] {
+    position: absolute; top: 2.3em; right: 0.2em; border-radius: 0.4em; box-shadow: 0px 1px 2px 1px rgb(150,150,150);
+    width: 18em; height: calc(100% - 2.7em); background-color: rgb(240,240,240);
+}
+
+div[user-toolbox] > div[container] {
+    border-radius: inherit; position: relative; 
+    width: 100%; height: 100%; padding: 0px; margin: 0px;
+}
+
+div[user-toolbox] > div[container] > div[numpad-result] {
+    position: absolute; left: 1em; top: 1em; width: calc(100% - 2em);
+    background-color: rgb(244 , 244, 244); height: 2em; border:2px solid rgb(220, 220, 220);
+}
+
+div[user-toolbox] > div[container] > div[numpad-result] > font {
+    display: block; margin-top: 0.45em; margin-left: 0.3em;margin-right: 0.3em;
+    font-family:  Calibri,'Gill Sans MT','Gill Sans', 'Trebuchet MS', sans-serif;
+    color: rgb(40, 40, 40);
+ }
+
+div[user-toolbox] > div[container] > div[numpad] {
+    position: absolute; left: 0.1em; top: 3.5em; width: 98%; height: 80%!important;
+    text-align: center; overflow-y: auto; max-height: 98%important; overflow-y: auto;
+}
+
+div[user-toolbox] >div[container] > div[numpad] > font[key] { cursor: pointer;
+    display: inline-block; padding-top:1.45em; border-radius: 2em;
+    width: 4.8em!important; height: 2.5em!important; background-color: green;
+    margin-top: 0.5em;  background-color: rgb(230,230,230);
+    font-size: 13pt; 
+}
+div[user-toolbox] > div[container] >div[numpad] > font[key]:hover {
+    box-shadow: 0px 0px 3px 2px rgb(210,210,210);
+}
+
+div[user-toolbox] > div[container] > div[numpad] > font[key]:active {
+    box-shadow: 0px 0px 3px 2px rgb(210,210,210);
+}
+div[user-toolbox] >div[container] > div[numpad][blue] > font[key] {
+    background-color: #c5cae9;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+table {
+    margin: 0 auto;
+    border-collapse: collapse;
+    width: 95%;
+    margin-top: 0.3em;
+    background-color: rgb(233, 233, 233);
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+table td,
+table th {
+    border: 1px solid #ddd;
+    padding: 8px;text-align: center;
+}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+table tr:hover {
+    background-color: #ddd;
+}
+
+table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    font-weight: 800;
+    background-color:  rgb(190,190,190);
+    color: rgb(60, 60, 60);
+    font-size: 14pt;
+}
+table td {
+    font-size: 12pt;
+}
+
+
+
+
+
+
+/*********************************************************************
+                            user profile UI
+*********************************************************************/
+
+
+div[user-profile] {
+    position: fixed; z-index: 11; top: 2.4em; left: 1.0em; width: 10em;
+    background: rgb(240, 240, 240); height: 11em;
+    border-radius: 0.5em; box-shadow: 0px 0px 5px 1px rgb(140,140,140);
+    border:1px rgb(120, 120, 120) solid; padding-top: 0.6em;
+    padding-left: 0.2em; padding-right: 0.2em;
+}
+div[user-profile]:after {
+    position: absolute;
+    content: '';
+    top: -0.45em; background: rgb(240, 240, 240);
+    left: calc(calc(10em / 2) - 0.3em);border-top: 1px rgb(120, 120, 120) solid; border-left: 1px rgb(120, 120, 120) solid;
+    height: 0.8em; width:0.8em;
+    transform: rotate(45deg); z-index: 12;
+}
+
+div[user-profile] > .userID {
+    margin-top: 1em; text-align: center;
+    font-family: Ara_Aqeeq, 'Times New Roman', Times, serif;
+    font-size: 12pt; cursor: default;
+}
+
+div[user-profile] > .settingsOpt {
+    width: 95%; height: 2em; background-color: rgb(220, 220, 220);
+    border:1px solid rgb(100, 100, 100); border-radius: 0.3em;
+    text-align: right; direction: rtl; margin: 0 auto; cursor: pointer;
+    margin-bottom: 0.25em;
+}
+div[user-profile] > .settingsOpt:hover {background-color: rgb(200, 200, 200);}
+div[user-profile] > .settingsOpt > img { float: right;
+    width: 1.5em; height: 1.5em; margin-right: 0.5em; margin-top: 0.25em;
+}
+div[user-profile] > .settingsOpt > font { float: right;
+    font-family: sans-serif; margin-right: 0.5em;
+    font-size: 14pt; margin-top: 0.46em; 
+}
+
+
+
+
+
+
+
+
+
+/*********************************************************************
+                            speed access UI
+*********************************************************************/
+
+div[uncatogrized-items] {
+    position: fixed; z-index: 11;
+    top: 2.2em; left: calc(calc(100% / 2) - calc(20em / 2));
+    width: 20em; background: rgb(240, 240, 240);
+    height: 80%; border-radius: 0.5em;
+    box-shadow: 0px 0px 5px 1px rgb(140, 140, 140);
+    border: 1px rgb(120, 120, 120) solid;
+    
+}
+.topbar {
+    width: 97%; height: 2em;
+    text-align: right; direction: rtl; margin: 0 auto; cursor: default;
+}
+.topbar > img { cursor: pointer;
+    width: 1.3em; height: 1.3em;float: left;
+       margin-right: 0.5em; margin-top: 0.25em;
+}
+.topbar > img[right] {float:right;margin-right: 0.5em;}
+.topbar > font {
+    float: right;user-select: none;
+    font-family: sans-serif; margin-right: 0.5em;
+    font-size: 13pt; margin-top: 0.6em; font-weight: bold;
+}
+
+div[uncatogrized-items]  > .salt_list {
+    width: 99%; height: calc(100% - 2.7em); padding-top: 0.3em; overflow-y: auto;
+     text-align: right; direction: rtl;
+}
+div[uncatogrized-items]  > .salt_list > font { display: inline-flex;
+    width: auto; height: 1.5em; background-color: rgb(20, 119, 33);
+    margin-right: 0.2em; color: white; padding: 0.2em;padding-top: 0.3em;
+    border-radius: 0.3em; margin-right:0.2em; margin-bottom: 0.3em;
+    cursor: pointer;
+}
+div[uncatogrized-items]  > .salt_list > font:hover {background-color: rgb(41, 153, 56);}
+
+
+
+
+div[input-banner]
+{
+    margin: 0.1em; border: 1px solid rgb(210, 210, 210);
+    padding-bottom: 0.2em; height: 2em; position: relative;
+    border-radius: 0.2em; background-color: rgb(239, 239, 239);
+    transition: background-color 0.5s;
+}
+div[input-banner]:hover
+{
+    background-color: rgb(220, 220, 220);
+}
+div[input-banner] > font {
+    font-size:11pt;
+    font-family: 'Times New Roman', Times, serif;
+    position: absolute;
+    text-align: right;
+    /* width: 32.5%; */
+    top: 0.66em;
+    right: 0.2em;
+    user-select: none;
+    display: block;
+}
+div[input-banner] > input, *[input] {
+    position: absolute;
+    top: 0.2em;
+     left: 0.13em; 
+    width: 65%;
+    border-radius: 0.3em;
+    padding-top: 0.2em;
+    padding-bottom:0.35em;
+    border: 1px solid rgb(100, 100, 100);
+    text-align: center;
+}
+div[input-banner] > input[type="date"] {
+    height: 1.2em;width: 75.4%;
+}
+div[input-banner] >select {
+    width: 66.4%; height: 1.82em;
+}
+div[input-banner][error-for] {
+    background-color: rgb(179, 83, 72);
+    color: white!important;
+    font-size: 13pt;
+    height: 1.5em; padding-top: 0px;
+}
+
+
+
+
+
+
+div[user-dialog] {
+    user-select: none;
+    position: fixed; z-index: 11;
+    top: 2.2em; left: calc(calc(100% / 2) - calc(20em / 2));
+    width: 25em; background: rgb(240, 240, 240);
+    height: 80%; border-radius: 0.5em;
+    box-shadow: 0px 0px 5px 1px rgb(140, 140, 140);
+    border: 1px rgb(120, 120, 120) solid;
+
+}
+div[user-dialog][nice-shadow='0']{box-shadow: 0px 0px 10px 3px rgb(200, 200, 200); }
+div[user-dialog][nice-shadow='1']{box-shadow: 0px 0px 20px 7px rgb(200, 200, 200); }
+div[user-dialog] > div[input-container] {
+    width: 95%; margin: 0 auto;
+    margin-top: 0.5em; height: 1.5em!important;
+    max-height: 1.5em;
+}
+div[user-dialog] > div[input-container] > input {
+    float: left; width: 80%;
+    height: 89%; text-align: center;
+    border-radius: 0.3em;
+    border: 1px solid rgb(100, 100, 100);
+}
+div[user-dialog] > div[input-container]  > button {
+    float: right; width: 18%; 
+    background-color: rgb(56, 142, 60);
+    height: 100%; color: whitesmoke;
+}
+div[user-dialog] > div[content-container] {
+    margin: 0.3em auto;
+    width: 95%;
+    border-radius: 0.3em;
+    border: 1px solid rgb(220, 220, 220);
+    height: calc(100% - 4.8em);
+    overflow-y: auto;
+    cursor: pointer;
+}
+div[user-dialog] > div[content-container] > div {
+    position: relative;
+    font-size: 12pt; background-color: white;
+    height: 3em;
+    direction: rtl;
+    padding-top: 0.3em;
+    margin: 0px;
+}
+div[user-dialog] > div[content-container] > div:nth-child(even) {
+    background-color: rgb(235,235,235);
+}
+div[user-dialog] > div[content-container] > div:hover {
+    background-color: rgb(220,220,220);
+}
+
+div[user-dialog] > div[content-container] > div > font[code] {
+    position: absolute; right: 3em; top: 1em;
+    font-size: 13.5pt;font-weight: bold;
+}
+div[user-dialog] > div[content-container] > div > font[price] {
+    position: absolute; left: 1em; top: 0.5em;
+     font-size: 12pt;
+}
+div[user-dialog] > div[content-container] > div > font[date] {
+    position: absolute; left: 1em;
+    bottom: 0em; color: rgb(100, 100, 100);
+}
+div[user-dialog] > div[content-container] > div > img {
+    position: absolute; right: 0.6em; width: 2em; height: 2em;
+    top: 0.7em;
+    background-position: center;
+}
+
+
+div[user-dialog] > div[full-content-container] {
+    margin: 0.3em auto;
+    width: 95%;
+    border-radius: 0.3em;
+    border: 1px solid rgb(220, 220, 220);
+    height: calc(100% - 2.8em);
+    overflow-y: auto; text-align: center;
+}
+div[user-dialog] > div[full-content-container] > * {direction: rtl;}
+
+div[user-dialog] > div[full-content-container] > div[input-banner], 
+div[user-dialog] > div[full-content-container] > div[note-banner] {
+    margin: 0.1em; border: 1px solid rgb(210, 210, 210);
+    padding-bottom: 0.2em; height: 2em; position: relative;
+    border-radius: 0.2em; background-color: rgb(239, 239, 239);
+    transition: background-color 0.5s;
+}
+div[user-dialog] > div[full-content-container] > div[input-banner]:hover, 
+div[user-dialog] > div[full-content-container] > div[note-banner]:hover {
+    background-color: rgb(220, 220, 220);
+}
+div[user-dialog] > div[full-content-container] > div[note-banner] {
+    background-color:#ffb74d; text-align: right;
+    direction: rtl;
+}
+div[user-dialog] > div[full-content-container] > div[note-banner] > font {
+    font-family: DROID_NASK_BOLD; font-size: 9pt;
+    color: white;border-radius: none; margin-right: 1em;
+}
+div[user-dialog] > div[full-content-container] > div[input-banner] > font {
+    font-size:11pt;
+    font-family: 'Times New Roman', Times, serif;
+    position: absolute;
+    text-align: right;
+    /* width: 32.5%; */
+    top: 0.66em;
+    right: 0.2em;
+    user-select: none;
+    display: block;
+}
+div[user-dialog] > div[full-content-container] > div[input-banner] > input, *[input] {
+    position: absolute;
+    top: 0.2em;
+     left: 0.13em; 
+    width: 65%;
+    border-radius: 0.3em;
+    padding-top: 0.2em;
+    padding-bottom:0.35em;
+    border: 1px solid rgb(100, 100, 100);
+    text-align: center;
+}
+div[user-dialog] > div[full-content-container] > div[input-banner] > input[type="date"] {
+    height: 1.2em;width: 75.4%;
+}
+div[user-dialog] > div[full-content-container] > div[input-banner] >select {
+    width: 66.4%; height: 1.82em;
+}
+div[user-dialog] > div[full-content-container] > button {
+    margin: 0 auto; 
+    width: 8em; padding-top:0.5em;padding-bottom:0.5em;
+}
+div[user-dialog] > div[full-content-container] > div[input-banner][error-for] {
+    background-color: rgb(179, 83, 72);
+    color: white!important;
+    font-size: 13pt;
+    height: 1.5em; padding-top: 0px;
+}
+div[user-dialog] > div[full-content-container] > div[input-banner][error-for]>font {
+    max-width: 100%; width: 100%;
+}
+div[user-dialog] > div[control-area] {
+    width: 100%!important;
+    height: 2em!important; text-align: center;
+    align-items: center;
+}
+div[user-dialog] > div[control-area] > * {margin-top: 0.3em;}
+div[user-dialog] > div[control-area] > button {
+    margin: 0 auto; border-radius: 0.4em;
+    padding: 0.3em 0.6em 0.3em 0.6em;
+    border: 0px; background: rgb(240, 240, 240);
+    transition: background-color 0.3s, color 0.3s;
+}
+div[user-dialog] > div[control-area] > button[control-ok] {color:#4caf50}
+div[user-dialog] > div[control-area] > button[control-cancel] {color:#d32f2f}
+div[user-dialog] > div[control-area] > button[control-ok]:hover {
+    background-color: #4caf50;
+    color:white;
+}
+div[user-dialog] > div[control-area] > button[control-cancel]:hover {
+    background-color: #d32f2f;
+    color:white;
+}
+div[user-dialog] > div[full-content-container] > div[tabs-container] {
+    display: flex; user-select: none;
+    width: 100%; margin: 0px; 
+    height: 1.5em; border-radius: 0.5em;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-bottom: solid 1px rgb(220, 220, 220);
+}
+div[user-dialog] > div[full-content-container] > div[tabs-container] > * { cursor: pointer; padding-top:0.7em;font-size:11pt;width: 100%; color: rgb(100, 100, 100);}
+div[user-dialog] > div[full-content-container] > div[tabs-container] > *:hover {background-color: #90caf9;}
+div[user-dialog] > div[full-content-container] > div[tabs-host] {
+    width: 100%; height: calc(100% - 1.52em); display: flex; margin: 0px;
+}
+div[user-dialog] > div[full-content-container] > div[tabs-host] > div[tab-content] {
+    width: 0px; height: 100%; transition: width 0.2s ease-in-out; background-color: rgb(235, 235, 235);
+}
+div[user-dialog] > div[full-content-container] > div[tabs-host] >  div[tab-content]:first-child {
+    width: 100%; height: 100%;
+}
+
+div[info-dialog] {
+    position: fixed; z-index: 11; top: 2.4em; left: 3.12em; width: 10em;
+    background: rgb(240, 240, 240); height: 10.6em;
+    border-radius: 0.5em; box-shadow: 0px 0px 5px 1px rgb(140,140,140);
+    border:1px rgb(120, 120, 120) solid; padding-top: 0.6em;
+    padding-left: 0.2em; padding-right: 0.2em; 
+}
+div[info-dialog]:after {
+    position: absolute;
+    content: '';
+    top: -0.45em; background: rgb(240, 240, 240);
+    left: calc(calc(10em / 2) - 0.3em);border-top: 1px rgb(120, 120, 120) solid; border-left: 1px rgb(120, 120, 120) solid;
+    height: 0.8em; width:0.8em;
+    transform: rotate(45deg); z-index: 12;
+}
+
+div[info-dialog] > font[company] {
+    font-size:20pt; display: block; width:100%;
+    text-align: center; font-family: AraAqeeq;
+}
+div[info-dialog] > font[describtion] {
+    display: block; width:100%; font-size: 14pt; margin-top: 1em;
+    text-align: center; font-family: 'Times New Roman', Times, serif;
+}
+
+div[info-dialog] > font[thanks] {
+    display: block; width:100%; font-size: 15pt; text-align: center; margin-top: 1em;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+
+
+
+
+
+
+
+.fullwide {width: 100%;}
+.fullwide-90 {width: 90%; min-width: 90%; max-width: 90%; box-sizing: border-box;}
+
+.padding-05 {padding-left: 0.5em;padding-right: 0.5em;padding-top: 0.2em;padding-bottom: 0.2em;}
+.margin-left-05 {margin-left: 0.5em;}
+.margin-right-05 {margin-right: 0.5em;}
+.margin-top-05 {margin-right: 0.5em;}
+.note-card {
+    position: relative;
+    width: 100%; height: 2em; background-color: rgb(220, 220, 220);
+}
+.note-card:nth-child(even) {background-color: rgb(200, 200, 200);}
+.note-card:hover { background-color: rgb(170, 170, 170); }
+.note-card > font[title] {
+    position: absolute; right: 0.5em;
+    font-family: 'Times New Roman', Times, serif;
+    top: 0.5em; font-size: 13pt;
+    max-width:15em;  font-weight: bold;
+}
+.note-card > font[date] {
+    position: absolute; right: 0.5em;
+    bottom: 0.3em; font-size: 11pt;
+}
+.note-card > img { cursor: pointer;
+    width: 30px; height: 30px;
+    position: absolute; left: 0.5em;
+    bottom: 0.6em; font-size: 11pt;
+}
+.note-card > img[open] {
+    left: 3.5em;
+}
+.note-card > img:hover { border-radius:50%; background-color: rgb(190,190,190);}
+
+
+
+.user-card {margin-top: 0.05em;
+    width: 100%; height: 2em;
+    background-color: rgb(230, 230, 230);
+    position: relative; cursor: pointer;
+}
+.user-card:hover {background-color: rgb(220, 220, 220);}
+.user-card > img[user-icon] {
+    position: absolute; right: 0.5em; top: 0.25em; width: 30px; padding: 0.1em;
+    height: 30px; border-radius: 50%; border:1px rgb(197, 197, 197) solid;
+}
+.user-card[online] > img[user-icon] {border:1px #2962FF solid}
+.user-card[online]::after {
+    position: absolute;height: 10px; width:10px;
+    content: ''; border-radius: 100%;
+    bottom: 0.35em; background: #2962FF;
+    right: 1.6em;border: 2px solid rgb(230, 230, 230);
+}
+
+.user-card > font[user-name] {
+    position: absolute; right: 3.6em; top: 0.6em; font-size: 13pt;
+    font-family: sans-serif; max-width: 15em; max-height:1.5em;
+}
+.user-card > img[delete-user], img[offline-user] {
+    position: absolute; left: 0.5em; top: 0.4em; width: 25px; padding: 0.1em;
+    height: 25px; border-radius: 50%;
+}
+.user-card > img[offline-user] {
+    left: 2em;
+}
+.user-card > img[delete-user]:hover,  img[offline-user]:hover {background-color: rgb(210, 210, 210);}
+
+
+
+
+
+
+
+
+
+div[user-screen] { user-select: none;
+    position: fixed; top: 0px; bottom: 0px; height: 95%; top:2.5%; left: 5%;
+    width: 90%; border-radius: 0.5em;
+    background-color: rgb(240, 240, 240); z-index: 13;
+    box-shadow: 0px 0px 5px 1px rgb(140, 140, 140);
+    border: 1px rgb(120, 120, 120) solid; overflow: hidden;
+}
+
+div[user-screen] > div[full-content-container] {
+    margin: 0.0em auto;
+    width: 98.5%;
+    border-radius: 0.3em;
+    border: 1px solid rgb(220, 220, 220);
+    height: calc(100% - 2.4em);
+    overflow-y: auto; text-align: center;
+}
+
+@media screen and (max-width: 1320px) {
+    div[user-screen] {width: 100%; height:100%; left:0px; top:0px; border-radius: 0px;}
+} 
+@media screen and (max-width: 1210px) {
+    div.ux-fragment-header {
+        background-color:rgb(250, 250 , 250);
+        position: absolute; top: 0.7%; width:20em; left:calc(100% /2 - 20em/2);
+        border-radius: 0.4em; box-shadow: 0px 0px 10px 3px rgb(220, 220, 220);
+    }
+} 
+
+.ux-fragment { 
+    width: 100%; height: 100%;
+
+}
+.ux-fragment[page] {overflow: hidden;}
+.ux-fragment[right] {float:right;}
+.ux-fragment[left] {float:left;}
+.ux-fragment[smaller] {width: 44%;}
+.ux-fragment[bigger] {width: 55.9%;}
+.ux-fragment[smaller2] {width: 40%;}
+.ux-fragment[bigger2] {width: calc(60% - 1px);}
+.ux-fragment[smaller3] {width: 35%;}
+.ux-fragment[bigger3] {width: calc(65% - 1px);}
+.ux-fragment[bigger], .ux-fragment[bigger2],.ux-fragment[bigger3] {
+    border-right:solid 1px rgb(220, 220, 220);
+}
+.ux-fragment-header {
+    padding-top: 0.3em;
+    margin:0px; background-color: rgb(240,240,240); width: 100%;
+    height: 1.28em; border-bottom:solid 1px rgb(220, 220, 220);
+}
+/*
+.ux-fragment[right] > .ux-fragment-header {border-left:solid 1px rgb(220, 220, 220);}
+.ux-fragment[left] > .ux-fragment-header {border-right:solid 1px rgb(220, 220, 220);}
+*/
+.ux-fragment-header-item { margin-right:0.5em; border-radius: 0.3em; text-align: center; height:  80%; padding: 0px; box-sizing: border-box; border:none; }
+.ux-fragment-header-item[bordered] {border-style: solid; border-width: 1.5px; border-color: rgb(150, 150, 150);}
+.ux-fragment-header-item[left]:first-child {margin-left: 0.5em;}
+.ux-fragment-header-item:hover { background-color: rgb(200, 200, 200); }
+
+.ux-fragment-content {
+    overflow-x: hidden; overflow-y: auto;
+    height: calc(100% - 1.28em); width: 100%;
+}
+
+.riched-content-card {
+    margin-top: 0.2em;
+    border-radius: 0.3em;
+    border: 1px solid rgb(200, 200, 200);
+    position: relative;
+    margin-left: 2.5%;
+    width: 95%; overflow: hidden;
+    height: 3em; max-height: 3em;
+    transition: all 0.4s ease-out;
+    cursor: pointer;
+}.riched-content-card[dir='rtl'] {direction: rtl;}
+.riched-content-card[clickable] {cursor: pointer;}
+.riched-content-card[clickable]:hover {
+    background-color: rgb(230, 230, 230);
+}
+.riched-content-card > * {position: absolute;}
+
+.riched-content-card > font:nth-child(1) {
+    color:#0d47a1; font-family: NUNITO_BOLD;
+    font-size: 11.6pt; top: 0.5em; right: 48px;
+     max-width: 65%; direction: rtl;
+    text-overflow: ellipsis;white-space: nowrap;overflow: hidden;
+}
+.riched-content-card > font:nth-child(2) {
+    color:rgb(60,60,60); right: 0.5em; bottom: 0.26em;
+    font-size: 10.5pt; font-family: NUNITO_BOLD;
+}
+.riched-content-card > font:nth-child(3) {
+    color:#388e3c; font-family: NUNITO_BOLD;
+    font-size: 10pt; top: 0.5em; left: 0.5em;
+    direction: rtl;
+}
+.riched-content-card > font:nth-child(4) {
+    color:rgb(60,60,60); font-family: NUNITO_BOLD;
+    font-size: 9.5pt; bottom: 0.3em; left: 1em;
+}
+.riched-content-card > img { right: 0.7em; top: 0.29em; width: 1.5em; height: 1.5em;}
+
+.riched-content-card:hover {
+    box-shadow: #0d192f 0px 0px 5px 0.1px;
+}
+
+
+.width-100{width:100%;}
+.nomargin{margin: 0px;}
+.nopadding{padding: 0px;}
+.noborder{border:none;}
+.rounded-04{border-radius: 0.4em;}
+*[margin-top='1%'] {margin-top: 1%!important;}
+*[width='90c'] {width: 98%!important; margin-left: 1%; margin-right: 1%;}
+*[padding='1'] {padding: 1em;}
+
+
+.ux-bill-item { 
+    width: 98%; margin-left: 1%; height: 2.8em;position: relative;
+    border-radius: 0.4em; background-color: rgb(240, 240, 240);
+}
+.ux-bill-item:hover { background-color: rgb(230,230,230);}
+* > .ux-bill-item:first-of-type {margin-top: 0.5em;}
+.ux-bill-item > * {position: absolute;}
+.ux-bill-item > img[icon] {
+    top: 0.25em; right: 0.5em; width: 36px; height:36px;
+}
+.ux-bill-item > font[name] {
+    top: 1em; right: 4em; width: 42%; text-align: right;
+    font-family: NUNITO_BOLD;font-size: 11.5pt; max-width: 42%;
+}
+.ux-bill-item > img[delete],.ux-bill-item > img[icon] {cursor: pointer;}
+.ux-bill-item > div[quantity], div[price] {
+    border: 1px solid #e53935;
+    top: 0.22em; right: 51%;width: auto; max-width: 5em; height: auto;
+    padding-right: 0.2em; padding-left: 0.5em; border-radius: 1em;
+}
+.ux-bill-item > div[price] {
+    right: calc(51% + 6em); border-color: #388e3c;
+}
+.ux-bill-item > div[quantity] > font, div[price] > font {direction: rtl; float: right; margin-top: 0.7em;
+    font-family: NUNITO_BOLD; font-size: 10pt; margin-right: 1em;
+}
+.ux-bill-item > div[quantity] > img, div[price] > img {float:right;width: 36px; height: 36px;margin: 0px;}
+.ux-bill-item > img[delete] { 
+    width: 25px; height: 25px;
+    padding: 0.13em; top: 0.3em; left: 0.5em; border-radius: 50%;
+    border: 1px solid #e53935;
+}
+
+.ux-hr {
+    width: 50%; height: 1.5px; background-color: rgb(200,200,200);
+    border: none; margin-top:0px; margin-bottom: 0px; opacity: 0.5;
+}
+
+
+.ux-input-with-label {
+    border-radius: 0.4em; border:1px solid white;
+    padding: 0.4em; width: auto; display: inline;
+}
+
+.ux-input-with-label > label {
+    padding-right: 1em; padding-top: 0.3em;
+}
+.ux-input-with-label[dir="rtl"] > label {
+    padding-left: 0.5em;padding-right: 0em;
+}
+.ux-input-with-label[dir="rtl"] > input {
+    padding: 0.1em 0.5em; border: 1px solid white;
+    border-radius: inherit; width: 5em;
+}
+
+.ux-input-with-label2 {
+    border-radius: 0.4em; border:1px solid rgb(194, 194, 194);
+    background-color: white; transition: box-shadow 0.3s ease-in-out;
+    padding: 0.4em 0.2em; width: auto; display: inline-block;
+}
+.ux-input-with-label2[fill] {width: 80%; margin-right: 0%;}
+.ux-input-with-label2:hover {box-shadow: #939393 0px 0px 10px 0.4px;}
+.ux-input-with-label > label {
+    padding-right: 1em; padding-top: 0.3em;
+}
+.ux-input-with-label[dir="rtl"] > label {
+    padding-left: 0.5em;padding-right: 0em;
+}
+.ux-input-with-label[dir="rtl"] > input, 
+.ux-input-with-label[dir="rtl"] > select {
+    padding: 0.1em 0.5em;
+    border-radius: inherit; width: 5em;
+    outline: 0px; border: 0px;
+}
+
+
+
+
+/********************************************************
+
+ FULL VIEW
+
+********************************************************/
+
+
+
+div[full-view] {
+    width: 100%; height:100%; position: fixed; top: 0px; 
+    user-select: none;
+    left:0px; opacity: 1;
+    background:rgb(250, 250 , 250); z-index: 50;
+}
+
+div[full-view] > div[toppar] {
+    background-color: #1565c0;
+    height: 2.6em;
+    position: relative;
+}
+div[full-view] > div[toppar] > h2 {
+    position: absolute; margin: 0px;
+    display: inline-block;
+    top: 0.28em; width: 35%;
+    color: white;
+    left: 32.5%;
+    text-align: center;
+}
+div[full-view] > div[toppar] > div[tools-area] {
+    position: absolute; right: 0.5em;
+    background-color: #2196f3;
+    max-width: 30%; top: 0.43em!important;
+    padding: 0em 0.4em 0.0em 0.4em;
+    height: 1.73em; overflow: hidden;
+    border-radius: 3em;direction: rtl;
+}
+div[full-view] > div[toppar] > div[tools-area] > *  {
+    margin-top: 0em; color: white;
+    height: 100%; background-color: #2196f3; border:none;
+    border-left: 1px solid #bbdefb!important;
+    transition: color 0.2s ease-in;
+    border-radius: 0!important;
+}
+div[full-view] > div[toppar] > div[tools-area] > *:hover {
+    color:black;
+}
+div[full-view] > div[toppar] > div[tools-area] > *:first-child 
+{margin-right:0.0em;}
+div[full-view] > div[toppar] > div[tools-area] > *:last-child 
+{border-left: none!important;}
+div[full-view] > div[full-content-container] {
+    margin: 0.33em auto 0em auto;
+    width: 98.5%;
+    border-radius: 0.3em;
+    border: 1px solid rgb(220, 220, 220);
+    height: calc(100% - 3.45em);
+    overflow-y: auto; text-align: center;
+}
+div[full-view] > div[toppar] > img[close-icon] {
+    position: absolute; cursor: pointer;
+    top: 0.55em; left: 1em; width: 24px; height: 24px;
+    background-size: 24px; border:none; outline: none;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAA41JREFUaEPtmcfLFEEQxX/f0ZwwHPSqYAJzzjminrz4t3nWi5hzToiYDwY8iQmMmA+KzpNuWYaZ6eruWWRhG/Y01dXvVVV3hR2gx9dAj+OnT+B/e7DvgV7xwGpgL/AA2A186RLw4cB+YBqwB7gQOscSQsuAY8BQp+wasAn4FFIe+X0EcKL4LXT7vgHbgHNNekIElgLHO8B7XbeAdcCHSJB14gJ/sjhrQUkgSKKJwHJn+SE1p94ANgIfM0mMAk4Bc2v0fAU2A5eqvjcReAVMCIC7CWzI8MRo4DQwO3DOC2BiLIErhfIlBusqnNYD7w2ynSJjHPhZhn26zKtiCYx0rp1nOOCuuxNvDbISUdjI8nMM8nec7nexBCQvErpc8w0H3XMHvQnIjgXOADMNOm87nbXeDb1COqPuhag6/yGwBtD9qVrjHPgZBvCm0LQQ8CQ63+im8x8VL4YSX5mEwJ8FphvAm3ONlYDOVJYUiUUGAI8diZdOdrwDrwwbWmbwUhRDQPLKCUeKFL8yhAJ44kj8dNl0qmHPVZflPxtk/4rEEtCeYS7BKUuHlkhoTQ4JFs/kRWALoMRlXikEpHxw8QQedhY2H9YgeNll2+giMZWAJ3HIvTo5JFQiyPLR4FNDqBOsPHEQWJvIQDXQDuB74v6kO1A+a5Ajoeo0ZilB7swB34YHPGCROOAKOwsJlei7gB8W4SaZnDvQqTcmW2ufSgSFXXY/0QYBJTiFg++krEZtpSnKJZAK3pPMJpFDQFlZvbI6t5x13XV2ST12KoG2wHviySRSCKiUUFG32GB2tZxalqZIRZx6bHMdlPKMyvJHgRUG8Oqk9NL8qpk4VKmIJhHjgZhK1IP3nZSeWWVdS2cXRcJKIAa8+mNZvtzDdoWEhYDqHYWNpQeoA+/DJYaEqTcIERB4NTCVI41SEIfAe/GYaUeQRBOBGPCaSKiZrxx9VNzW1kg0EVCtr+FqaFktX9Zjncppn5qn7VVAmgg8AyYF0MdavoqEZkSh6dzzOixNBBT3in+FUtUSeL021mlcnS3kiSYSmlBvLXLP+VgPSL7834DXcd/FfC74zoutUWN5Qq1OTWGseVLlCr1C2lQes2twJe+8Dl2OyO+62J0kBF5xL+/ULgsBbVao7AOeOneG5p+R2P+Ja2Ktx2OK+yurEbx2WQl42d+pyLq1L4ZAtzBk6e0TyDJfC5v7HmjBiFkq/gAymbExSRhJBgAAAABJRU5ErkJggg==");
+}
+
+.ux-supplier-item {
+    cursor: pointer; transition: box-shadow 0.3s;
+    position: relative; direction: rtl;
+    margin-top: 0.3em;margin-left:2.5%; 
+    height: 2em;  width: 95%; border-radius: 0.5em; 
+    background-color: rgb(244, 244, 244);
+    box-shadow: 0px 0px 10px 1px rgb(200, 200, 200);
+}
+.ux-supplier-item:hover {box-shadow: 0px 0px 10px 0.5px #78909c;}
+.ux-supplier-item > * {position: absolute;}
+.ux-supplier-item > img[icon] {
+    top: 0.2em; right:0.5em;
+    width: 36px; height: 36px;
+}
+.ux-supplier-item > font[name] { 
+    text-align: right; max-height: 1.5em;
+    width: 14em;
+    top: 0.4em; right:3em; line-break: strict;
+    font-size: 13pt; font-family: DROID_NASK_BOLD,NUNITO_BOLD; word-wrap: none;
+}
+
+.ux-supplier-item > font[company] {
+    color:#2979ff;
+    top: 0.8em; left:0.3em; text-align:right;
+    width: calc(100% - 14.2em - 4.7em - 36px);
+    font-size: 10.5pt; font-family: DROID_NASK_BOLD,NUNITO_BOLD;
+}
+
+
+
+
+/*
+     / / | |  / / / / / /
+    / /  | | / / //////////////////////////
+*/
+div.ux-menu-overlay-cover {
+    position: fixed; top: 0px; left: 0px; 
+    width: 100%; height: 100%; z-index: 2;
+}
+div.ux-menu {
+    background-color: whitesmoke; position: fixed; top: 25%; left: 25%; 
+    width: auto; height: auto; min-width: 8em; padding: 0.4em 0.1em; border-radius: 1em; 
+    box-shadow: #797979 0px 0px 15px 0.5px; z-index: 3;
+    border: 1px solid #797979;
+}
+div.ux-menu > ul {
+    padding: 0px; margin: 0px; list-style: none; width: calc(100% - 0em);
+    display: block;
+}
+div.ux-menu > ul > li {
+    height: 1.7em; padding-bottom: 0.5em;
+    transition: all 0.3s ease-in;
+    transform-origin: bottom left;
+}
+div.ux-menu > ul > li:first-child {border-radius: 0.5em 0.5em 0em 0em;}
+div.ux-menu > ul > li:last-child {border-radius: 0em 0em 0.5em 0.5em;}
+div.ux-menu > ul > li:hover {
+    background-color: rgb(215, 215, 215);
+}
+div.ux-menu > ul > li > img { float:left;
+    margin-left: 0.4em;
+    width: 20px; height: 20px;  margin-top: 0.5em;
+}
+div.ux-menu[dir="rtl"] > ul > li > img {
+    margin-left: 0em;float:right;margin-right: 0.4em;
+}
+div.ux-menu > ul > li > font {
+    float: left; margin-top: 0.5em; margin-left: 0.5em;
+}
+div.ux-menu > ul > li > font:first-child {
+    text-indent: calc(20px + 0.4em);
+}
+div.ux-menu > ul > li:empty {
+    border-top: 1px darkgray solid;
+    border-radius: 0;
+    height: 1px; padding: 0px;
+    margin-bottom: 0.5em;
+}
+div.ux-menu > ul > li:empty:hover {background-color: whitesmoke;}
+div.ux-menu[dir="rtl"] > ul > li > font {
+    float: right; margin-right: 0.5em;margin-left: 0em;
+}
+div.ux-menu > ul > li > img[sum-menu-indicator] {
+    float: right;
+}
+div.ux-menu[dir="rtl"] > ul > li > img[sum-menu-indicator] {
+    float: left;
+    transform: rotateY(3.142rad);
+} 
+div.ux-menu > ul > li > div.ux-menu {
+    display: none;
+    margin-left: 7%;
+}
+div.ux-menu[dir="rtl"] > ul > li > div.ux-menu {
+    margin-left: -7%;
+}
+div.ux-menu > ul > li:hover > div.ux-menu {
+    margin-left: 60%; display: block; 
+    animation: fullview_start 0.2s ease-in forwards;
+}
+div.ux-menu[dir="rtl"] > ul > li:hover > div.ux-menu {
+    margin-left: -90%;
+}
+
+
+.user-name-with-icon { 
+    direction: rtl; background-color: rgb(253, 253, 253);
+    width: auto; height: 4em; border-radius: 0.4em; transition: box-shadow 0.3s;
+    box-shadow: 0px 0px 10px 2px rgb(210, 210, 210);float: left;
+    margin:1em; margin-left: 0px; margin-bottom: 0px; padding-left: 0.5em; padding-right: 0.5em;
+}
+.user-name-with-icon[clickable]:hover {
+    box-shadow: 0px 0px 15px 4px #b0bec5;
+}
+.user-name-with-icon[right] {float: right;}
+.user-name-with-icon > img { 
+    float: right; width: 4em; height: 4em;
+}
+.user-name-with-icon > font {
+    font-size:11pt; float: right;
+    font-family: DROID_NASK_BOLD,NUNITO_BOLD;
+    margin-top: 2.4em; margin-right: 0.5em;
+}
+
+
+button[image-button] {
+    border-radius: 0.3em;
+    border: 1px solid gray;
+    padding: 0.5em 1em 0.5em 0.8em;
+    position: relative;
+    text-indent: 10px; cursor: pointer;
+    direction: rtl; text-align: right;
+}
+button[image-button] > img {
+    position: absolute; right: 0.3em; top: 0.6em;
+    width: 16px; height: 16px; 
+}
+
+div[tools-area] > button[image-button] {
+    padding-top: 0.4em;
+}
+div[tools-area] >  button[image-button] > img {
+    top: 0.4em;
+}

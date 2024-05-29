@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cashier</title>
+    <link rel="stylesheet" href="/www/css/normalize.css">
+    <link rel="stylesheet" href="/www/css/ui.css">
+    <link rel="stylesheet" href="/www/css/childui.css">
+    <link rel="stylesheet" href="/www/css/colors.css">
+    <script type="module" src="/www/js/app.cashier.js"></script>
+    <script src="/www/js/index.js"></script>
+    <script>
+        if (location.search != "?bk") {
+            document.addEventListener("DOMContentLoaded", () => {
+                let btn = document.getElementById("topbar_search_button_moveback");
+                btn.remove();
+            });
+        }
+
+        var container;
+        function onload() {
+            container = document.getElementById('app');
+            document.container = container;
+        }
+    </script>
+    <style>
+        .floating_toolbox {
+            position: fixed;
+            z-index: 3;
+            width: auto !important;
+            height: auto !important;
+            padding: 0em 1em 1em 1em;
+            margin-right: 23em;
+            top: 15em;
+            box-shadow: darkgray 0px 0px 10px 1px !important;
+        }
+    </style>
+</head>
+
+<body oncontextmenu="return false;" style="user-select: none;">
+
+
+    <div class="appbar">
+        <img left src="/www/res/images/icons/OIG2.hy8fcL.W0mXTKv.jpg" />
+        <font author>Autoparts System</font>
+        <button id="topbar_search_button_moveback" clickable right style="background-color: #16a351;"
+            onclick="history.back()">الرجوع</button>
+        <button id="topbar_mostasked_button" clickable right style="background-color: #16a351; color: white;"
+            onclick="TopbarFormFields.FetchTopSold();">الاكثر مبيعا</button>
+        <button id="topbar_search_button" clickable right style="background-color: #16a351; color: white;"
+            onclick="TopbarFormFields.Search();">البحث</button>
+        <input id="topbar_inputfield" type="text" product-code-field autocomplete="off"
+            form="f00" autofocus placeholder="البحث عن صنف" />
+        <select id="topbar_catgory_select" style="width: 8em;" input form="f00" title="تحديد الفئة "
+            autocomplete="on"></select>
+        <select id="topbar_store_select" style="width: 8em;" input form="f00" title="تحديد المخزن الرئيسي"
+            autocomplete="on"></select>
+        <select id="topbar_client_select" onchange="selectClientChanged(this)" style="width: 11em;" input form="f00"
+            title="تحديد العميل" autocomplete="on"></select>
+        <form action="javascript:void(0);" target="_self" name="f00"></form>
+    </div>
+
+    <div middle-area style="width: calc(100% - 0.4em);left: 0.2em; overflow: hidden;">
+        <div class="ux-fragment" right smaller2>
+            <div toolbox style="width: calc(40% - 2%); margin-right: 0.7%; top:0.7em;height: 8em;">
+                <div container>
+                    <div tool id="main_toolbox_cancel" onclick="cancelBill();"
+                        style="background-color: #b52616; display: none;">
+                        <img src="/www/res/images/icons/icons8_Cancel_Order_96px.png" />
+                        <font>الغاء الفاتورة</font>
+                    </div>
+                    <div tool id="main_toolbox_new" onclick="newBillClick()" style="background-color: #16a351;">
+                        <img src="/www/res/images/icons/icons8_Create_Order_127px.png" />
+                        <font style="font-size: 11pt;">انشاء فاتورة</font>
+                    </div>
+                    <div tool data-link href="/www/html/notes.html" style="background-color: #64b5f6;">
+                        <img src="/www/res/images/icons/icons8_moleskine_127px.png" />
+                        <font>الملاحظات</font>
+                    </div>
+                    <div tool data-link href="/www/html/clients.html" style="background-color: #1565c0;">
+                        <img src="/www/res/images/icons/icons8_users_127px.png" />
+                        <font>العملاء</font>
+                    </div>
+                    <div tool data-link href="/www/html/sales.html" style="background-color: #66bb6a;">
+                        <img src="/www/res/images/icons/icons8_copybook_127px.png" />
+                        <font>المبيعات</font>
+                    </div>
+                    <div tool style="background-color: #ef5350;" onclick="window.open('Calculator:///');">
+                        <img src="/www/res/images/icons/icons8_calculator_127px.png" />
+                        <font>الالة الحاسبة</font>
+                    </div>
+                    <div tool data-link href="/www/html/products.html" style="background-color: #ffc107;">
+                        <img src="/www/res/images/icons/icons8_automotive_127px.png" />
+                        <font>المنتجات</font>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 9.5em; height: calc(100% - 20% - 1em - 1em); overflow:auto;">
+                <table id="table_search_items" dir="rtl" style="width: 95%">
+                    <tr>
+                        <td style="display: none;">#</td>
+                        <td>الاسم</td>
+                        <td>الشركة</td>
+                        <td>الكود</td>
+                        <td>الباركود</td>
+                        <td>الكمية</td>
+                        <td>س. بيع</td>
+                        <td>س.ب. جملة</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="ux-fragment" page left bigger2>
+            <div class="ux-fragment" right smaller3 style="position: relative;">
+                <div user-toolbox style="width: 100%; box-shadow: none; right: 0px; top: 1.8em;">
+                    <div container>
+                        <div numpad-result>
+                            <font>0</font>
+                        </div>
+                        <div numpad blue style="height: 100%!important;">
+                            <font key>1</font>
+                            <font key>2</font>
+                            <font key>3</font>
+                            <font key>4</font>
+                            <font key>5</font>
+                            <font key>6</font>
+                            <font key>7</font>
+                            <font key>8</font>
+                            <font key>9</font>
+                            <font key title="حذف خانه من اليمين">⌫</font>
+                            <font key>0</font>
+                            <font key style="color:#b52616" title="الغاء هذا الصنف">᰽</font>
+                            <font key title="زيادة الكمية المطلوبة بـ 1">+</font>
+                            <font key title="تنقيص الكمية المطلوبة بـ 1">-</font>
+                            <font key style="color:#66bb6a" title="تأكيد تغيير الكمية">✓</font>
+                            <hr>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div style="text-align: center; height: 1.5em; margin-top: 0.5em;">
+                    <b style="padding-top: 1em;">
+                        الكميات
+                    </b>
+                </div>
+            </div>
+            <div class="ux-fragment" left bigger3 style="overflow:auto;">
+                <div toolbox style="width: calc(60% * 0.65 - 2em); left: 1em; top:0.7em;height: 8em;">
+                    <div container>
+                        <div tool onclick="document.requestLogout()" style="background-color: rgb(36, 36, 36);">
+                            <img src="/www/res/images/icons/icons8_logout_127px.png" />
+                            <font style="font-size: 10pt;">تسجيل الخروج</font>
+                        </div>
+                        <div tool style="background-color: rgb(110, 23, 160);"
+                            onclick="MenuManager.ShowMenuAtPosition('BillOption-Menu', event.pageX, event.pageY)">
+                            <img src="/www/res/images/icons/icons8_Drag_List_Down_127px.png" alt="">
+                            <font>الخيارات</font>
+                        </div>
+                        <div tool id="bill_option_repository" style="background-color: #e0b817; "
+                            onclick="BillRepository.Show();">
+                            <img src="/www/res/images/icons/icons8_repository_96px.png" />
+                            <font>المستودع</font>
+                        </div>
+                        <div tool id="bill_option_transfere_repository" class="grayon"
+                            style="background-color: #66bb6a;  cursor:not-allowed;" onclick="moveToRepository(this);">
+                            <img src="/www/res/images/icons/icons8_rearrange_96px.png" />
+                            <font style="font-size: 10pt;">تحويل للمستودع</font>
+                        </div>
+                        <div tool id="bill_option_save_print" class="grayon" onclick="saveBill(1);"
+                            style="background-color: #1565c0; cursor:not-allowed;"
+                            onclick="window.open('Calculator:///');">
+                            <img src="/www/res/images/icons/icons8_print_96px.png" />
+                            <font>حفظ وطباعة</font>
+                        </div>
+                        <div tool id="bill_option_save" class="grayon" onclick="saveBill(0);"
+                            style="background-color: #1565c0; cursor:not-allowed;">
+                            <img src="/www/res/images/icons/icons8_save_96px.png" />
+                            <font>حفظ</font>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    style="margin-top: 9.5em; height: calc(100% - 20% - 1em - 1em); overflow-x:hidden; overflow-y: hidden;">
+                    <div class="bill_header" style="overflow-x: auto; overflow-y: hidden;">
+                        <div class="ux-input-with-label" dir="rtl">
+                            <label for="client_name">ر. الفاتورة</label>
+                            <input type="text" style="width: 7.0em;" id="bill_id" readonly>
+                        </div>
+                        <div class="ux-input-with-label" dir="rtl">
+                            <label for="client_name">العميل</label>
+                            <input type="text" style="width: 12.0em;" id="client_name" readonly>
+                        </div><br>
+                        <div class="ux-input-with-label" dir="rtl" style="top: 0.7em;">
+                            <label for="discounts_total"> نوع الفاتورة </label>
+                            <input type="text" id="bill_Type" readonly style="width: 4em;">
+                        </div>
+                        <div class="ux-input-with-label" dir="rtl" style="width: 1em;top: 0.7em;">
+                            <label for="discounts_total"> الخصومات </label>
+                            <input type="text" id="discounts_total" readonly value="0" style="width: 3.5em;">
+                        </div>
+                        <div class="ux-input-with-label" oninput="payedInputFieldInput();" dir="rtl"
+                            style="top: 0.7em;">
+                            <label for="total_payed">المدفوع</label>
+                            <input type="number" step="0.25" min="0" id="total_payed" value="0"
+                                style="text-align: right; direction: ltr;width: 4em;">
+                        </div><br>
+                        <div class="ux-input-with-label" dir="rtl" style="top: 1.35em;">
+                            <label for="total_remain">المتبقي</label>
+                            <input type="number" min="0" id="total_remain" readonly value="0" style="width: 9em;">
+                        </div>
+                        <div class="ux-input-with-label" dir="rtl" style="top: 1.35em;">
+                            <label for="total_price">الاجمالي</label>
+                            <input type="number" id="total_price" min="0" readonly value="0" style=" width: 10.5em;">
+                        </div>
+                    </div>
+                    <table id="table_cart_items" dir="rtl" style="width: 95%">
+                        <tr>
+                            <td></td>
+                            <td>الاسم</td>
+                            <td>الكمية</td>
+                            <td>القيمة</td>
+                            <td>التخفيض</td>
+                            <td>بسعر الجملة</td>
+                            <td>الاجمالي</td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+    </div>
+    <!-- floating toolbox -->
+    <div id="newbill_floatingtoolbox" toolbox class="floating_toolbox" nice-shadow='1' style="display: none;">
+        <div container>
+            <div tool onclick="createNewBill(0); document.toggleShowHideOfUserDialog(addBillFloatingToolBox, 'hide');"
+                style="background-color: #16a351;">
+                <img src="/www/res/images/icons/icons8_Create_Order_127px.png" />
+                <font>بيع نقدي</font>
+            </div>
+            <div tool onclick="createNewBill(1); document.toggleShowHideOfUserDialog(addBillFloatingToolBox, 'hide');"
+                style="background-color: #16a351;">
+                <img src="/www/res/images/icons/icons8_Create_Order_127px.png" />
+                <font>بيع اجل</font>
+            </div>
+            <div tool onclick="createNewBill(2); document.toggleShowHideOfUserDialog(addBillFloatingToolBox, 'hide');"
+                style="background-color: #16a351;">
+                <img src="/www/res/images/icons/icons8_Create_Order_127px.png" />
+                <font>مبدئية</font>
+            </div>
+            <div tool onclick="document.toggleShowHideOfUserDialog(addBillFloatingToolBox, 'hide');"
+                style="background-color: #cd461d;">
+                <img src="/www/res/images/icons/icons8_close_90px.png" />
+                <font>اغلاق</font>
+            </div>
+        </div>
+    </div>
+    <!--  Searched Items Menu   -->
+    <div class="ux-menu-overlay-cover" style="display: none;">
+        <div name="SearchedItems-Menu" class="ux-menu" dir="rtl" style="display: display;">
+            <ul>
+                <li onclick="MenuManager.HideMenu('SearchedItems-Menu')">
+                    <img src="/www/res/images/icons/icons8_cancel_48px.png">
+                    <font>رجوع</font>
+                </li>
+                <li></li>
+                <li>
+                    <img src="/www/res/images/icons/icons8_add_shopping_cart_48px.png">
+                    <font>البيع بسعر القطاعي</font>
+                    <img sum-menu-indicator src="/www/res/images/icons/icons8_more_than_48px_1.png">
+                    <div sub-menu class="ux-menu" dir="rtl">
+                        <ul>
+                            <li name="searcheditems_single_nodiscount" onclick="searchedItemClicked(this)">
+                                <img src="/www/res/images/icons/icons8_add_shopping_cart_48px.png">
+                                <font>اضافة</font>
+                            </li>
+                            <li name="searcheditems__single_discount" onclick="searchedItemClicked(this)">
+                                <img src="/www/res/images/icons/icons8_discount_48px.png">
+                                <font> مع تخفيض</font>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li name="searcheditems_" onclick="searchedItemClicked(this)" id="whole_sale_menu_option">
+                    <img src="/www/res/images/icons/icons8_add_shopping_cart_48px.png">
+                    <font>البيع بسعر الجملة</font>
+                    <img sum-menu-indicator src="/www/res/images/icons/icons8_more_than_48px_1.png">
+                    <div sub-menu class="ux-menu" dir="rtl">
+                        <ul>
+                            <li name="searcheditems__wholesale_nodiscount" onclick="searchedItemClicked(this)">
+                                <img src="/www/res/images/icons/icons8_add_shopping_cart_48px.png">
+                                <font>اضافة</font>
+                            </li>
+                            <li name="searcheditems__wholesale_discount" onclick="searchedItemClicked(this)">
+                                <img src="/www/res/images/icons/icons8_discount_48px.png">
+                                <font> مع تخفيض</font>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--  Bill Option Menu   -->
+    <div class="ux-menu-overlay-cover" style="display: none;">
+        <div name="BillOption-Menu" class="ux-menu" dir="rtl" style="display: display;">
+            <ul>
+                <li>
+                    <img src="/www/res/images/icons/icons8_cancel_48px.png">
+                    <font>رجوع</font>
+                </li>
+                <li></li>
+                <li onclick="extraOptionItemClicked(this, 'reload')">
+                    <img src="/www/res/images/icons/icons8_sync_48px.png">
+                    <font>تحديث</font>
+                </li>
+                <li></li>
+                <li onclick="extraOptionItemClicked(this, 'fetch-last-bill')" title="استرجاع الفاتورة السابقة">
+                    <img src="/www/res/images/icons/icons8_tips_48px.png">
+                    <font>الفاتورة السابقة</font>
+                </li>
+                <li>
+                    <img src="/www/res/images/icons/icons8_rich_text_converter_48px_1.png">
+                    <font> تغيير نوع الفاتورة</font>
+                    <img sum-menu-indicator src="/www/res/images/icons/icons8_more_than_48px_1.png">
+                    <div sub-menu class="ux-menu" dir="rtl">
+                        <ul>
+                            <li onclick="extraOptionItemClicked(this, 'bill-2')">
+                                <font> لفاتورة مبدئية</font>
+                            </li>
+                            <li onclick="extraOptionItemClicked(this, 'bill-1')">
+                                <font> لفاتورة دفع اجل</font>
+                            </li>
+                            <li onclick="extraOptionItemClicked(this, 'bill-0')">
+                                <font> لفاتورة دفع نقدي</font>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li></li>
+                <li onclick="extraOptionItemClicked(this, 'select-all')">
+                    <img src="/www/res/images/icons/icons8_todo_list_48px.png">
+                    <font>تحديد الكل</font>
+                </li>
+                <li onclick="extraOptionItemClicked(this, 'unselect-all')">
+                    <img src="/www/res/images/icons/icons8_cancel_48px.png">
+                    <font>الغاء التحديد</font>
+                </li>
+                <li>
+                    <img src="/www/res/images/icons/icons8_rich_text_converter_48px_1.png">
+                    <font>الاصناف المحددة</font>
+                    <img sum-menu-indicator src="/www/res/images/icons/icons8_more_than_48px_1.png">
+                    <div sub-menu class="ux-menu" dir="rtl" style="margin-top:89%">
+                        <ul>
+                            <li onclick="extraOptionItemClicked(this, 'cancel-all')">
+                                <font> الغاء الاصناف </font>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+
+
+            </ul>
+        </div>
+    </div>
+    <!-- Bill Repository -->
+    <div user-screen name="repo-window" style="display: none;">
+        <div class="ux-fragment" right smaller style="background-color: #1565c0;">
+            <div class="ux-fragment-content">
+                <h1 style="text-align: right;color: white; padding: 0px 1em 0em 0px;">الفواتير المخزنة في المستودع</h1>
+                <table id="bill_repo_head_table" dir="rtl">
+
+                </table>
+            </div>
+
+        </div>
+        <div class="ux-fragment" left bigger>
+            <div class="ux-fragment-header">
+                <b style="color: #16a351;margin-right: 1em; float: right;cursor: pointer;"
+                    onclick="BillRepository.RestoreBill();">استرجاع</b>
+                <b style="color: Red;margin-right: 1em; float: right;cursor: pointer;"
+                    onclick="BillRepository.RemoveSelected();">حذف</b>
+                <b style="color:Red;margin-left: 1em; float: left;cursor: pointer"
+                    onclick="BillRepository.Hide();">اغلاق</b>
+            </div>
+            <div class="ux-fragment-content">
+                <div id="bill_repo_placeholder_icon"
+                    style="margin: 0 auto; text-align: center; vertical-align: middle; height: 50%; padding-top: 35%;">
+                    <img src="/www/res/images/icons/icons8_where_what_quest_127px.png">
+                </div>
+
+                <table id="bill_repo_table" style="display: none;" dir="rtl">
+
+                </table>
+            </div>
+        </div>
+    </div>
+    <div print-page hidden>
+        <div container>
+            <div header>
+                <img sys-icon width="26" height="26" src="/www/res/images/icons/OIG2.hy8fcL.W0mXTKv.jpg" />
+                <h5 sys-name>Autoparts System</h5>
+                <h1 business-name>Private company for shit and shit autopart systtem managsdc fuck shit</h1>
+                <i address1>Tripoli</i>
+                <i address2>, NoWhere</i>
+                <i phones>هاتف 0919885296, 094435sdsdcsdsdcsdcsdcsdcsd37853</i>
+                <i bill-type>مبدئية</i>
+                <table bill-info>
+                    <tr>
+                        <td>#</td>
+                        <td>3458093459</td>
+                    </tr>
+                    <tr>
+                        <td>العميل</td>
+                        <td>عبدالحرمن سالم محمد عطيهsdcsdcsdcsd</td>
+                    </tr>
+                </table>
+            </div>
+            <div content>
+                <table bill-items>
+                    <tr>
+                        <td>#</td>
+                        <td>الاسم</td>
+                        <td>الكمية</td>
+                        <td>تقاس بـ</td>
+                        <td>سعر بيع الجملة</td>
+                        <td>السعر</td>
+                        <td>التخفيض</td>
+                        <td>الاجمالي</td>
+
+                    </tr>
+                    <tr>
+                        <td>100</td>
+                        <td>Item name forferfererefr id 100</td>
+                        <td>5</td>
+                        <td>متر</td>
+                        <td>لا</td>
+                        <td>120د.ل</td>
+                        <td>15د.ل</td>
+                        <td>105د.ل</td>
+                    </tr>
+
+                </table>
+                <table bill-signitures>
+                    <tr>
+                        <td colspan="2" style="padding: 0.1em;">الموظف : محمد صلاح</td>
+                        <td colspan="2" style="padding: 0.1em;">التاريخ 12/4/2184 45:34</td>
+                        <td style="padding: 0.1em;">الاجمالي 12949</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 0.1em;text-align: right;">المدفوع : 0</td>
+                        <td colspan="2" style="padding: 0.1em;text-align: right;">المتبقي : 0</td>
+                        <td rowspan="2" style="padding: 0.1em;">التوقيع/ الختم</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" rowspan="3" style="text-align: right;">
+                            <u>ملاحظات</u><br>
+                            <ul>
+                                <li>تبا</li>
+                                <li>لنا</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <div user-screen id="app" style="display: none; overflow-y: auto;">
+    </div>
+    <script src="/www/js/ui.js"></script>
+    <script src="/www/js/cashier.js"></script>
+</body>
+
+</html>

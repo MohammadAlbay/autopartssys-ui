@@ -1,0 +1,4 @@
+home: html/redirect.html
+available: true
+connection-handler: net6.0/autopartssys.dll
+upload-directory: uploads/

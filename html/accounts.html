@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/www/css/childui.css">
+    <script>
+        if (typeof container === 'undefined') {
+            let user = sessionStorage.getItem("user");
+            if(user == null)
+                location.href = "/www/html/login.html"
+            else {
+                userData = JSON.parse(user);
+                location.href = "/www/html/"+userData.Page+"?account";
+            }
+        }
+    </script>
+</head>
+
+<body class="host">
+    <div class="host">
+        <h1 class="main_head">حسابات المستخدمين</h1>
+        <img class="floating_icon_near_to_head" src="/www/res/images/icons/icons8_add_user_male_skin_type_7_48px.png"
+            alt="اضافة حساب مستخدم" clickable onclick="toggleShowHideOfUserDialog(addAccountUserDialog, 'show');">
+            <img class="floating_icon_near_to_head" src="/www/res/images/icons/icons8_refresh_48px.png"
+            alt="اعادة تحميل" clickable onclick="loadRequiredData();" 
+            style="right: 20em;">
+        <table id="table_account" dir="rtl">
+            <tr>
+                <td>#</td>
+                <td>اسم المستخدم</td>
+                <td>الاسم بالكامل</td>
+                <td> الصلاحية</td>
+                <td>حذف المستخدم</td>
+            </tr>
+        </table>
+    </div>
+
+    <form action="" id="form_add_user" autocomplete="new-password"></form>
+    <div user-dialog nice-shadow='1' id="add_account_userdialog" style="display: none;">
+        <div full-content-container>
+            <h4>إضافة حساب مستخدم</h4>
+            <div input-banner>
+                <font ellipse-words>اسم المستخدم</font>
+                <input type="text" input name="Username"  autocomplete="new-password" required maxlength="30" minlength="8" form="form_add_user">
+            </div>
+            <div input-banner error-for="Username"  style="display: none;">
+                <font></font>
+            </div>
+            <div input-banner>
+                <font ellipse-words>اسم الحساب</font>
+                <input type="text" input name="Fullname" autocomplete="new-password" required maxlength="50" minlength="4" form="form_add_user">
+            </div>
+            <div input-banner error-for="Fullname"  style="display: none;">
+                <font></font>
+            </div>
+            <div input-banner>
+                <font ellipse-words>كلمة المرور</font>
+                <input type="password" input name="PassCode" autocomplete="new-password" required minlength="6" maxlength="30" form="form_add_user">
+            </div>
+            <div input-banner error-for="PassCode"  style="display: none;">
+                <font></font>
+            </div>
+            <div input-banner>
+                <font ellipse-words>كود الصلاحية</font>
+                <select input id="PermissionCode" name="PermissionCode" required form="form_add_user"></select>
+            </div>
+            <div input-banner error-for="PermissionCode"  style="display: none;">
+                <font></font>
+            </div>
+        </div>
+        <div control-area>
+            <button control-cancel onclick="toggleShowHideOfUserDialog(addAccountUserDialog, 'hide');">الغاء</button>
+            <button id="submitButton" control-ok onclick="addAccount()">تسجيل المستخدم</button>
+        </div>
+    </div>
+
+</body>
+
+</html>
